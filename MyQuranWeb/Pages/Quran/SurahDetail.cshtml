@@ -1,0 +1,210 @@
+﻿@page "{id:int?}/{AyahID?}"
+@model MyQuranWeb.Pages.Quran.SurahDetailModel
+@{
+    ViewData["Title"] = $"Surat {Model.Surah.NameLatin} Arab, Latin & Terjemah";
+}
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+<div id="snackbar"></div>
+<div class="form-group form-row">
+    <div class="col-12 text-right">
+        <partial name="_Navigation" model="Model.Navigation" />
+    </div>
+</div>
+<div class="form-group form-row">
+    @*<div class="col-form-label text-right col-lg-9 col-md-7 col-sm-7">
+    </div>*@
+    <label class="col-lg-9 col-md-7 col-sm-7 col-4 text-right font-weight-bold" for="@Model.ID">Pilih :</label>
+    @*<div class="offset-lg-9 offset-md-7 offset-sm-7 offset-7 col-lg-2 col-md-3 col-sm-3 col-3">*@
+    <div class="col-lg-2 col-md-3 col-sm-3 col-5">
+        <select asp-for="@Model.ID" asp-items="Model.SurahList" class="form-control form-control-sm searchList" id="searchSurahID">
+        </select>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-1 col-3">
+        <select asp-for="@Model.AyahID" asp-items="Model.AyahList" class="form-control form-control-sm searchList" id="searchAyahID">
+        </select>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">@(Model.Surah.HeaderOnly)</p>
+    </div>
+    <div class="card-body">
+        <!--<div class="form-group form-row">-->
+        @*<div class="col">*@
+        <!--<div class="input-group input-group-sm mb-3">
+            <input type="number" class="form-control form-control-sm" asp-for="AyahID" placeholder="Cari no ayat" aria-label="Masukkan kata kunci / no ayat"
+                   aria-describedby="basic-addon2" id="txtSearch">
+            <div class="input-group-append">
+                <button class="btn btn-outline-dark" type="button" asp-page-handler="Search" id="btnSearch">GO</button>
+            </div>
+        </div>-->
+        @*</div>*@
+        <!--</div>-->
+        @if (Model.ID.HasValue && Model.ID.Value != 1 && Model.ID.Value != 9)
+        {
+        <div class="form-group">
+            <div class="col-12">
+                <p class="text-center h2 arab">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+            </div>
+            <div class="col-12 text-left">
+                <p class="text-center">bismillāhir-raḥmānir-raḥīm</p>
+            </div>
+            <div class="col-12 text-left">
+                <p class="translate text-center"><small>Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.</small></p>
+            </div>
+        </div>
+        }
+        @for (int i = 0; i < Model.Ayahs.Count; i++)
+        {
+            var alternateColor = "";
+            string playerID = "player" + Model.Ayahs[i].AyahId.ToString();
+            var bookmarks = "fa-bookmark-o";
+            if (!string.IsNullOrEmpty(Request.Cookies[Model.Ayahs[i].Id.ToString()]))
+            {
+                bookmarks = "fa-bookmark";
+            }
+
+            @if (@Model.Ayahs[i].AyahId % 2 == 1) { alternateColor = "alert-secondary"; }
+            <div class="form-group form-row @alternateColor text-dark" id="div_@Model.Ayahs[i].AyahId">
+                @*<div class="col-sm-2 col-md-2 col-lg-1">*@
+                <div class="col-2 text-left small">
+                    <p>@Model.Ayahs[i].AyahId</p>
+                </div>
+                <div class="col-10 text-right">
+                    <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Play/Pause" onclick="playAudio('@(i+1)')" id="btnAudio@(i+1)"><i id="playBtn@(i+1)" class="fa fa-play"></i></button>
+                        @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Mute / Unmute" onclick="document.getElementById('@playerID').muted=!document.getElementById('@playerID').muted"><i id="volumeBtn(@i+1)" class="fa fa-volume-up"></i></button>*@
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Ayat & Terjemah" id="@("btnCopy" + i)" onclick='copyToClipboard("@i","@Model.Ayahs[i].AyahId","@Model.ID","@Model.Ayahs[i].ReadText","@Model.Ayahs[i].ReadIndo","@Model.Ayahs[i].TranslateIndo")'><i class="fa fa-clone"></i></button>
+                        @*<button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-tafsir="@Model.Ayahs[i].Tafsir.Kemenag" data-title="@($"Tafsir Kemenag Q.S. {Model.Surah.Id}:{i + 1}")"><i class="fa fa-book"></i></button>*@
+                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-id="@Model.Ayahs[i].Id" data-title="@($"Tafsir Kemenag Q.S. {Model.Surah.Id}:{i + 1}")"><i class="fa fa-book"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + Model.Ayahs[i].Id)" onclick="setCookie('@Model.Ayahs[i].Id','@Model.Ayahs[i].Id','100')"><i id="bookmark@(Model.Ayahs[i].Id)" class="fa @bookmarks"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Tandai Terakhir Dibaca" id="@("btnLastAyah" + Model.Ayahs[i].Id)" onclick='setLastAyah("100","@Model.ID","@Model.Surah.NameLatin","@Model.Ayahs[i].AyahId","@Model.Ayahs[i].Id","@Model.Ayahs[i].JuzDetail.JuzId")'><i id="lastAyah@(Model.Ayahs[i].Id)" class="fa fa-sticky-note"></i></button>
+
+                        <audio id="@playerID" onpause="pauseAudio('@(i+1)')">
+                            <source src="@($"{Model.AppSettingOption.MP3Url}{Model.ID:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
+                        </audio>
+                        @*<a class="btn btn-outline-dark" _blank" href="~/Quran/JuzDetail/1"><i class="fa fa-pause"></i></a>*@
+                        @*<button type="button" onclick="showTafsir('@Model.ID', '@(i + 1)')" id="@($"btnTafsir{Model.Ayahs[i].AyahId}")">Tafsir</button>*@
+                    </div>
+                    <audio id="@playerID">
+                        <source src="@($"{Model.AppSettingOption.MP3Url}{Model.ID:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
+                    </audio>
+                </div>
+                @*<div class="col-sm-10 col-md-10 col-lg-11 text-right">*@
+                <div class="col-12 text-right">
+                    <p class="h2 arab">@Model.Ayahs[i].ReadText</p>
+                </div>
+                <div class="col-12 text-justify">
+                    <p>@Model.Ayahs[i].ReadIndo</p>
+                </div>
+                <div class="col-12 text-justify">
+                    <p class="translate"><small>@Model.Ayahs[i].TranslateIndo</small></p>
+                </div>
+            </div>
+        }
+        <partial name="_Navigation" model="@Model.Navigation" />
+    </div>
+</div>
+<partial name="_TafsirModal" />
+<style type="text/css">
+    style type="text/css" >
+    .smartControl {
+        top: 3em;
+        padding-left: 1em;
+        z-index: 1;
+    }
+
+    .control {
+        position: sticky;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //var isValid = checkCookie(7);
+        //if (!isValid) {
+        //    alert(getCookie(7));
+        //}
+
+        var ayahID = $("#searchAyahID").val();
+        scrollToAyah(ayahID);
+
+        $("#btnSearch").click(function () {
+            ayahID = $("#searchAyahID").val();
+            scrollToAyah(ayahID);
+        });
+
+        $('#txtSearch').on('keypress', function (e) {
+            if (e.which === 13) {
+                scrollToAyah(ayahID);
+            }
+        });
+
+        $('#tafsirModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            //var recipient = button.data('tafsir'); // Extract info from data-* attributes
+            var id = button.data('id');
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: '/Quran/SurahDetail?handler=Tafsir&id=' + id,
+                /*data: "{'name':'" + $("#<%=txtFilterCustomer.ClientID%>").val() + "'}",*/
+                //data: city,
+                dataType: "json",
+                success: function (data) {
+                    var modal = $('#tafsirModal');
+                    modal.find('.modal-title').text(button.data('title'));
+                    modal.find('.modal-body #tafsirText').html(data);                    
+                },
+                failure: function (response) {
+                    /*alert(response.responseText);*/
+                    $.confirm({
+                        title: 'Error',
+                        content: response.responseText,
+                        autoClose: 'ok|2000',
+                        buttons: {
+                            ok: {
+                                text: 'OK',
+                                action: function () {
+                                    
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+            //var modal = $(this);
+            ////modal.find('.modal-title').text('New message to ' + recipient)
+            ////modal.find('.modal-body textarea').val(recipient)
+            //modal.find('.modal-title').text(button.data('title'));
+            //modal.find('.modal-body #tafsirText').html(recipient);
+        })
+
+        //$('.searchList').on('change', function () {
+        $('#searchSurahID').on('change', function () {
+            //ways to retrieve selected option and text outside handler
+            //console.log('Changed option value ' + this.value);
+            //console.log('Changed option text ' + $(this).find('option').filter(':selected').text());
+            var origin = window.location.origin;
+            window.location.replace(origin + "/Quran/SurahDetail/" + $(this).val() + '/1');
+            //alert(origin + "Quran/SurahDetail/" + this.value);
+        });
+
+        $('#searchAyahID').on('change', function () {
+            var origin = window.location.origin;
+            scrollToAyah($(this).val());
+        });
+    });
+
+
+</script>

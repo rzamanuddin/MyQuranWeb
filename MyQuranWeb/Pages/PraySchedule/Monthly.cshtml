@@ -1,0 +1,240 @@
+﻿@page "{SearchLocationID:?}/{Search:?}/{SearchPeriod:?}"
+@model MyQuranWeb.Pages.PraySchedule.MonthlyModel
+@{
+    ViewData["Title"] = "Jadwal Sholat ";
+}
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">*@
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+<div id="error" class="alert alert-danger text-danger">
+    <span>@Model.ErrorMessage</span>
+</div>
+}
+<input id="baseURL" type="hidden" asp-for="@Model.AppSettingOption.BaseUrl" />
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">Jadwal Sholat</p>
+    </div>
+    <div class="card-body pre-scrollable" style="min-height:600px;">
+        <form method="get">
+            <input type="hidden" id="txtLocationID" asp-for="SearchLocationID" />
+
+            <div class="offset-sm-2 col-sm-10 offset-md-5 col-md-7 offset-lg-6 col-lg-6">
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm">Kota</label>
+                    <input asp-for="Search" type="search" id="txtSearch" class="form-control form-control-sm" placeholder="Cari daerah / Kota" />
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm">Tanggal</label>
+                    <input asp-for="SearchPeriod" type="month" class="form-control form-control-sm" />
+                </div>
+                <div class="form-group text-right">
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-dark" type="submit" id="btnSearch"><i class="fa fa-search"> Cari</i></button>
+                        <button class="btn btn-outline-dark" type="button" id="btnReset"><i class="fa fa-remove"> Reset</i></button>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-6">
+                    <div class="form-group text-right">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-dark" type="submit" id="btnSearch">Cari</button>
+                            <button class="btn btn-outline-dark" type="button" id="btnReset">Reset</button>
+                        </div>
+                    </div>
+                </div>*@
+            @*<div class="form-group form-row">
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm">Kota</label>
+                        <input asp-for="Search" type="search" class="form-control form-control-sm" placeholder="Cari daerah / Kota" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="col-form-label col-form-label-sm">Tanggal</label>
+                        <input asp-for="SearchDate" type="date" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-2 align-bottom">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-dark" type="submit" id="btnSearch">Cari</button>
+                            <button class="btn btn-outline-dark" type="button" id="btnReset">Reset</button>
+                        </div>
+                    </div>
+                </div>*@
+        </form>
+        <div class="form-group"></div>
+        @if (Model.APIPrayerResult != null)
+        {
+            if (Model.APIPrayerResult.Location != null)
+            {
+                if (Model.APIPrayerResult.Location.Schedules.Count > 0)
+                {
+                    <div class="form-group">
+                        <div class="col-12">
+                            <table class="table table-borderless table-sm table-striped table-hover small">
+                                <tr class="text-center">
+                                    <th>Tanggal</th>
+                                    <th>Imsak</th>
+                                    <th>Subuh</th>
+                                    <th>Terbit</th>
+                                    <th>Dzuhur</th>
+                                    <th>Ashar</th>
+                                    <th>Maghrib</th>
+                                    <th>Isya</th>
+                                </tr>
+                                @for (int i = 0; i < Model.APIPrayerResult.Location.Schedules.Count; i++)
+                                {
+                                    var praySchedule = Model.APIPrayerResult.Location.Schedules[i];
+                                    string fontBold = "";
+                                    if (praySchedule.ShortDate == DateTime.Today)
+                                    {
+                                        fontBold = "font-weight-bold";
+                                    }
+                                    <tr class="text-center @fontBold">
+                                        <td>@praySchedule.ShortDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@praySchedule.Imsak</td>
+                                        <td>@praySchedule.Subuh</td>
+                                        <td>@praySchedule.Terbit</td>
+                                        <td>@praySchedule.Dzuhur</td>
+                                        <td>@praySchedule.Ashar</td>
+                                        <td>@praySchedule.Maghrib</td>
+                                        <td>@praySchedule.Isya</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-12 text-center text-info font-italic small">
+                            Sumber Bimas Islam Kemenag via @Model.AppSettingOption.BaseUrl
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        //$("#txtSearch").change(function () {
+        //    var search = $(this).val();
+        //    alert(search);
+        //});
+
+        $("#btnReset").click(function () {
+            window.location.href = window.location.origin + "/PraySchedule";
+        });
+
+        $("body").on('autocompleteselect', '#txtSearch', function (event, ui) {
+            //alert(ui.item.locationID);
+            $("#txtLocationID").val(ui.item.locationID);
+        });
+
+        var baseURL = $("#baseURL").val();
+        searchLocation(baseURL);//"https://api.myquran.com/v1");
+
+        @*$("#btnSearch").click(function () {
+            var search = $("#txtSearch").val();
+            $.ajax({
+                type: "GET",
+                url: "https://api.myquran.com/v1/sholat/kota/cari/" + search,
+                /*data: search,*/
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { Authorization: "Bearer " + "@Model.Token" },
+                success: function (response) {
+                    //alert(response.ERRORCODE + ": " + response.ERRORDESC);
+                    var location = response;
+                    if (location.status) {
+                        alert("Success." + location.data[0].id);
+                    }
+                    else {
+                        alert("Error: " + location.message)
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });*@
+    });
+
+    function searchLocation(baseUrl) {
+        $("#txtSearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    url: baseUrl + "/sholat/kota/cari/" + $("#txtSearch").val(),
+                    /*data: "{'name':'" + $("#<%=txtFilterCustomer.ClientID%>").val() + "'}",*/
+                    //data: city,
+                    dataType: "json",
+                    success: function (data) {
+                        //response(data.d);
+                        if (data.status) {
+                            //alert(baseUrl + "sholat/kota/cari/" + $("#txtSearch").val());
+                            //alert(JSON.stringify(data));
+                            //response(data.data.d)
+                            response($.map(data.data, function (item) {
+                                return { label: item.lokasi, value: item.lokasi, locationID: item.id };
+                            }))
+                        } else {
+                            //alert("Error: " + data.message)
+                            //$.confirm({
+                            //    title: 'Error',
+                            //    content: data.message,
+                            //    autoClose: 'ok|2000',
+                            //    buttons: {
+                            //        ok: {
+                            //            text: 'OK',
+                            //            action: function () {
+                            //                $("#txtLocationID").val('');
+                            //            }
+                            //        }
+                            //    }
+                            //});
+                        }
+                    },
+                    error: function (response) {
+                        //alert(response.responseText);
+                        $.confirm({
+                            title: 'Error',
+                            content: response.responseText,
+                            autoClose: 'ok|2000',
+                            buttons: {
+                                ok: {
+                                    text: 'OK',
+                                    action: function () {
+                                        $("#txtLocationID").val('');
+                                    }
+                                }
+                            }
+                        });
+                    },
+                    failure: function (response) {
+                        /*alert(response.responseText);*/
+                        $.confirm({
+                            title: 'Error',
+                            content: response.responseText,
+                            autoClose: 'ok|2000',
+                            buttons: {
+                                ok: {
+                                    text: 'OK',
+                                    action: function () {
+                                        $("#txtLocationID").val('');
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

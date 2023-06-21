@@ -1,0 +1,47 @@
+﻿<div class="modal fade" id="ayahModal" tabindex="-1" role="dialog" aria-labelledby="ayahModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ayahModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="ayahID" />
+                    <input type="hidden" id="surahID" />
+                    <div class="form-group">
+                        <div class="col-12 text-right">
+                            <p id="ayahReadText" class="h2 arab"></p>
+                        </div>
+                        <div class="col-12 text-justify">
+                            <p id="ayahReadIndo"></p>
+                        </div>
+                        <div class="col-12 text-justify">
+                            <p id="ayahTranslateIndo" class="translate small"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCopyModal" type="button" class="btn btn-primary" onclick="copyAyah()"><i class="fa fa-clone"></i> Salin Ayat</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script>
+    $(function () {
+        $("#btnCopy").click(function () {
+            var readText = $('#ayahReadText').html();
+            var readIndo = $('#ayahReadIndo').html();
+            var translateIndo = $('#ayahTranslateIndo').html();
+            var ayahID = $("#ayahID").val();
+            var surahID = $("#surahID").val();
+
+            copyAyah(ayahID, surahID, readText, readIndo, translateIndo);
+        });
+    });
+</script>*@
+

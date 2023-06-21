@@ -1,0 +1,74 @@
+﻿@page "{TypeID:int?}"
+@model IndexModel
+@{
+    ViewData["Title"] = "Daftar Surat";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger text-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header text-center">
+        @if (!Model.TypeID.HasValue)
+        {
+            <p class="h2">Daftar Surat</p>
+        }
+        else
+        {
+            <p class="h2">Daftar Tafsir</p>
+        }
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            @*@if (Model.Surahs.Count > 0)
+                {
+                    int i = 0;
+                    @for (int r = 1; r <= 3; r++)
+                    {
+                        <div class="col-md-4 col-lg-4 col-sm-12 col-xl-4 text-left">
+                            <ul style="list-style:none;">
+                                @while (i < 38 * r) //@for (i; i < 38; i++)
+                                {
+                                    var s = Model.Surahs[i];
+                                    <li  href="~/Quran/SurahDetail/@s.Id" target="_blank">
+                                        <a href="~/Quran/SurahDetail/@s.Id" target="_blank">@s.HeaderOnly</a>
+                                    </li>
+                                    i++;
+                                }
+                            </ul>
+                        </div>
+                    }
+                }*@
+            <table class="table table-sm table-striped table-hover table-borderless">
+                @for (int i = 0; i < Model.Surahs.Count; i++)
+                {
+                    if (!Model.IsMobileDevice)
+                    {
+                        <tr>
+                            @for (int c = 0; c < 3; c++)
+                            {
+                                var s = Model.Surahs[i + c];
+                                <td><a href="~/Quran/SurahDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.HeaderOnly</a></td>
+                            }
+                        </tr>
+                        i += 2;
+                    }
+                    else
+                    {
+                        <tr>
+                            @{
+                                var s = Model.Surahs[i];
+                                <td><a href="~/Quran/SurahDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.Header</a></td>
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

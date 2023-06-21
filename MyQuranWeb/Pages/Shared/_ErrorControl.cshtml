@@ -1,0 +1,7 @@
+﻿@model string
+@if (!string.IsNullOrWhiteSpace(Model))
+{
+    <div id="error" class="alert alert-danger text-danger">
+        <span>@Model</span>
+    </div>
+}

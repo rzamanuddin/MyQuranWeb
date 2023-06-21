@@ -1,0 +1,185 @@
+﻿@page 
+
+@model MyQuranWeb.Pages.Quran.FindModel
+
+@{
+    ViewData["Title"] = $"Pencarian Ayat & Terjemah.";
+}
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger text-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+<div id="snackbar"></div>
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">Pencarian</p>
+    </div>
+    <div class="card-body">
+        <form method="get">
+            <div class="form-group row">
+                <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="search" class="form-control form-control-sm" asp-for="Search" placeholder="Cari terjemah atau ayat" aria-label="Masukkan kata kunci / no ayat"
+                               aria-describedby="basic-addon2" id="txtSearch">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" type="submit" id="btnSearch" title="Cari terjemah atau ayat"><i class="fa fa-search"></i></button>
+                            <button class="btn btn-outline-dark" type="button" id="btnReset" title="Reset pencarian"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group bg-secondary">
+                <div class="col text-center text-white font-italic">
+                    <span class="text-wh">@Model.FoundMessage</span>
+                </div>
+            </div>
+            <div class="form-group row"></div>
+        </form>
+        @{int start = 0; int rowID = 1; }
+        @for (int i = 0; i < Model.Ayahs.Count; i++)
+        {
+            var alternateColor = "";
+            string playerID = "player" + (i+1).ToString();
+            int totalAyah = Model.Ayahs.Where(q => q.SurahId == Model.Ayahs[i].SurahId).Count();
+            var bookmarks = "fa-bookmark-o";
+            if (!string.IsNullOrEmpty(Request.Cookies[Model.Ayahs[i].Id.ToString()]))
+            {
+                bookmarks = "fa-bookmark";
+            }
+
+            if (start != Model.Ayahs[i].SurahId)
+            {
+                <div class="form-group form-row">
+                    <div class="col-11 text-center text-dark">
+                        <strong> @($"{Model.Ayahs[i].Surah.NameLatin} ({totalAyah} Ayat)")</strong>
+                    </div>
+                    <div class="col-1 text-sm-right">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="collapse" data-target=".multi-collapse@(Model.Ayahs[i].SurahId)" onclick="expandCollapse('@Model.Ayahs[i].Id')" title="Expand / Collapse"><i class="fa fa-angle-down" id="btnExpand@(Model.Ayahs[i].Id)"></i></button>
+                    </div>
+                </div>
+                rowID = 1;
+            }
+
+            @if (rowID % 2 == 1) { alternateColor = "alert-secondary"; }
+            var border = "";
+
+            if (rowID == totalAyah)
+            {
+                border = "border-bottom";
+            }
+
+            <div class="form-group form-row @alternateColor text-dark @border collapse multi-collapse@(Model.Ayahs[i].SurahId)" id="div_@Model.Ayahs[i].AyahId">
+                @*<div class="col-sm-2 col-md-2 col-lg-1">*@
+                <div class="col-2 text-left small">
+                    <p>@Model.Ayahs[i].AyahId</p>
+                </div>
+                <div class="col-10 text-right">
+                    <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Play/Pause" onclick="playAudio('@(i+1)')"><i id="playBtn@(i+1)" class="fa fa-play"></i></button>
+                        @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Mute / Unmute" onclick="document.getElementById('@playerID').muted=!document.getElementById('@playerID').muted"><i id="volumeBtn(@i+1)" class="fa fa-volume-up"></i></button>*@
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Ayat & Terjemah" id="@("btnCopy" + i)" onclick='copyToClipboard("@(Model.Ayahs[i].AyahId-1)","@(Model.Ayahs[i].AyahId)","@Model.Ayahs[i].SurahId","@Model.Ayahs[i].ReadText","@Model.Ayahs[i].ReadIndo","@Model.Ayahs[i].TranslateIndo")'><i class="fa fa-clone"></i></button>
+                        @*<button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-tafsir="@Model.Ayahs[i].Tafsir.Kemenag" data-title="@($"Tafsir Kemenag Q.S. {Model.Ayahs[i].SurahId}:{Model.Ayahs[i].AyahId}")"><i class="fa fa-book"></i></button>*@
+                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-id="@Model.Ayahs[i].Id" data-title="@($"Tafsir Kemenag Q.S. {Model.Ayahs[i].SurahId}:{Model.Ayahs[i].AyahId}")"><i class="fa fa-book"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + Model.Ayahs[i].Id)" onclick="setCookie('@Model.Ayahs[i].Id','@Model.Ayahs[i].Id','100')"><i id="bookmark@(Model.Ayahs[i].Id)" class="fa @bookmarks"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Buka Sebagai Surat" id="@("btnOpen" + Model.Ayahs[i].Id)" onclick="openAyah('@Model.Ayahs[i].SurahId','@Model.Ayahs[i].AyahId')"><i class="fa fa-folder"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Buka Sebagai Juz" id="@("btnOpenJuz" + Model.Ayahs[i].Id)" onclick="openJuz('@Model.Ayahs[i].JuzDetail.JuzId','@Model.Ayahs[i].Id')"><i class="fa fa-folder"></i></button>
+                        @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Tandai Terakhir Dibaca" id="@("btnLastAyah" + Model.Ayahs[i].Id)" onclick='setLastAyah("100","@Model.Ayahs[i].SurahId","@Model.Ayahs[i].Surah.NameLatin","@Model.Ayahs[i].AyahId","@Model.Ayahs[i].Id","@Model.Ayahs[i].JuzDetail.JuzId")'><i id="lastAyah@(Model.Ayahs[i].Id)" class="fa fa-sticky-note"></i></button>*@
+
+                        <audio id="@playerID" onpause="pauseAudio('@(i+1)')">
+                            <source src="@($"{Model.AppSettingOption.MP3Url}{Model.Ayahs[i].SurahId:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
+                        </audio>
+                        @*<a class="btn btn-outline-dark" _blank" href="~/Quran/JuzDetail/1"><i class="fa fa-pause"></i></a>*@
+                        @*<button type="button" onclick="showTafsir('@Model.ID', '@(i + 1)')" id="@($"btnTafsir{Model.Ayahs[i].AyahId}")">Tafsir</button>*@
+                    </div>
+                    @*<audio id="@playerID">
+                        <source src="@($"{Model.AppSettingOption.MP3Url}{Model.Ayahs[i].SurahId:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
+                    </audio>*@
+                </div>
+                @*<div class="col-sm-10 col-md-10 col-lg-11 text-right">*@
+                <div class="col-12 text-right">
+                    <p class="h2 arab">@Model.Ayahs[i].ReadText</p>
+                </div>
+                <div class="col-12 text-justify">
+                    <p>@Model.Ayahs[i].ReadIndo</p>
+                </div>
+                <div class="col-12 text-justify">
+                    <p class="translate"><small>@Model.Ayahs[i].TranslateIndo</small></p>
+                </div>
+            </div>
+
+            start = Model.Ayahs[i].SurahId;
+            rowID++;
+        }
+    </div>
+</div>
+<partial name="_TafsirModal"/>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtSearch').on('keypress', function (e) {
+            if (e.which === 13) {
+                //var ayahID = $("#txtSearch").val();
+                //scrollToAyah(ayahID);
+                $("#btnSearch").click();
+            }
+        });
+
+
+        $('#tafsirModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            //var recipient = button.data('tafsir'); // Extract info from data-* attributes
+            var id = button.data('id');
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: '/Quran/Find?handler=Tafsir&id=' + id,
+                /*data: "{'name':'" + $("#<%=txtFilterCustomer.ClientID%>").val() + "'}",*/
+                //data: city,
+                dataType: "json",
+                success: function (data) {
+                    var modal = $('#tafsirModal');
+                    modal.find('.modal-title').text(button.data('title'));
+                    modal.find('.modal-body #tafsirText').html(data);
+                },
+                failure: function (response) {
+                    /*alert(response.responseText);*/
+                    $.confirm({
+                        title: 'Error',
+                        content: response.responseText,
+                        autoClose: 'ok|2000',
+                        buttons: {
+                            ok: {
+                                text: 'OK',
+                                action: function () {
+
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        })
+
+        $("#btnReset").click(function () {
+            location.href = location.origin + "/Quran/Find";
+        });
+    });
+
+    function expandCollapse(id) {
+        var btnExC = $("#btnExpand" + id);
+        if (btnExC.hasClass("fa-angle-down")) {
+            $("#btnExpand" + id).removeClass("fa fa-angle-down");
+            $("#btnExpand" + id).addClass("fa fa-angle-up");
+        } else {
+            $("#btnExpand" + id).removeClass("fa fa-angle-up");
+            $("#btnExpand" + id).addClass("fa fa-angle-down");
+        }
+    }
+</script>

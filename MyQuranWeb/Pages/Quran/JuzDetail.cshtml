@@ -1,0 +1,229 @@
+﻿@page "{id:int?}/{juzDetailID:int?}"
+@model MyQuranWeb.Pages.Quran.JuzDetailModel
+@{
+    ViewData["Title"] = $"Juz {Model.ID} Arab, Latin & Terjemah.";
+
+}
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+<div id="error" class="alert alert-danger text-danger">
+    <span>@Model.ErrorMessage</span>
+</div>
+}
+<div id="snackbar"></div>
+<div class="form-group form-row ">
+    <div class="col-12 text-right">
+        <partial name="_Navigation" model="Model.Navigation" />
+    </div>
+</div>
+<div class="form-group form-row">
+    @*<div class="col-form-label text-right col-lg-9 col-md-7 col-sm-7">
+        </div>*@
+    <label class="col-lg-9 col-md-7 col-sm-7 col-4 text-right font-weight-bold" for="@Model.ID">Pilih Juz :</label>
+    @*<div class="offset-lg-9 offset-md-7 offset-sm-7 offset-7 col-lg-2 col-md-3 col-sm-3 col-3">*@
+    <div class="col-sm-2 col-md-2 col-lg-1 col-3">
+        <select asp-for="@Model.ID" asp-items="@Model.JuzList" class="form-control form-control-sm searchList" id="searchJuzIDHeader">
+        </select>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-3 col-5">
+        <select asp-for="@Model.JuzDetailID" asp-items="@Model.JuzDetailList" class="form-control form-control-sm searchList" id="searchJuzIDDetail">
+        </select>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">@Model.JuzHeader.HeaderName</p>
+    </div>
+    <div class="card-body">
+        @*<div class="form-group row">
+                <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="number" class="form-control form-control-sm" asp-for="Search" placeholder="Masukkan no ayat" aria-label="Masukkan kata kunci / no ayat"
+                               aria-describedby="basic-addon2" id="txtSearch">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" type="button" asp-page-handler="Search" id="btnSearch">GO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        <input type="hidden" id="searchJuzID" asp-for="JuzDetailID" />
+        @{int start = 0; int row = 1;}
+        @for (int i = 0; i < Model.JuzDetails.Count; i++)
+        {
+            var alternateColor = "";
+            var border = "";
+
+            if (row % 2 == 0)
+            {
+                alternateColor = "alert-secondary";
+            }
+
+
+            int totalAyah = Model.JuzDetails.Where(q => q.SurahId == Model.JuzDetails[i].SurahId).Count();
+
+            if (Model.JuzDetails[i].AyahId == totalAyah)
+            {
+                border = "border-bottom";
+            }
+
+            string playerID = "player" + (i + 1).ToString();
+            var bookmarks = "fa-bookmark-o";
+            if (!string.IsNullOrEmpty(Request.Cookies[Model.JuzDetails[i].Ayah.Id.ToString()]))
+            {
+                bookmarks = "fa-bookmark";
+            }
+
+            if (start != Model.JuzDetails[i].SurahId)
+            {
+                //int totalAyah = Model.JuzDetails.Where(q => q.SurahId == Model.JuzDetails[i].SurahId).Count();
+
+        <div class="form-group form-row alert-secondary text-dark">
+            <div class="col text-center" style="padding-top: 0.3em;">
+                <p class="h5">@($"{Model.JuzDetails[i].Ayah.Surah.NameLatin} ({totalAyah} Ayat)")</p>
+            </div>
+        </div>
+
+        @if (Model.JuzDetails[i].SurahId != 1 && Model.JuzDetails[i].SurahId != 9
+                   && Model.JuzDetails[i].AyahId == 1)
+                {
+        <div class="form-group form-row">
+            <div class="col-12">
+                <p class="text-center h2 arab">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+            </div>
+            <div class="col-12 text-left">
+                <p class="text-center">bismillāhir-raḥmānir-raḥīm</p>
+            </div>
+            <div class="col-12 text-left">
+                <p class="translate text-center"><small>Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.</small></p>
+            </div>
+        </div>
+                }
+            }
+
+        <div class="form-group form-row @alternateColor text-dark" id="div_@Model.JuzDetails[i].Id">
+            @*<div class="col-sm-2 col-2 col-lg-1">*@
+            <div class="col-2 text-left small">
+                <p>@Model.JuzDetails[i].AyahId</p>
+            </div>
+            <div class="col-10 text-right">
+                <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Play/Pause" onclick="playAudio('@(i+1)')"><i id="playBtn@(i+1)" class="fa fa-play"></i></button>
+                    @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Mute / Unmute" onclick="document.getElementById('@playerID').muted=!document.getElementById('@playerID').muted"><i id="volumeBtn(@i+1)" class="fa fa-volume-up"></i></button>*@
+                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Ayat & Terjemah" id="@("btnCopy" + i)" onclick='copyToClipboard("@i","@Model.JuzDetails[i].Ayah.AyahId","@Model.JuzDetails[i].SurahId","@Model.JuzDetails[i].Ayah.ReadText","@Model.JuzDetails[i].Ayah.ReadIndo","@Model.JuzDetails[i].Ayah.TranslateIndo")'><i class="fa fa-clone"></i></button>
+                    @*<button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-tafsir="@Model.JuzDetails[i].Ayah.Tafsir.Kemenag" data-title="@($"Tafsir Kemenag Q.S. {Model.JuzDetails[i].Ayah.Surah.Id}:{Model.JuzDetails[i].Ayah.AyahId}")"><i class="fa fa-book"></i></button>*@
+                    <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-id="@Model.JuzDetails[i].Id" data-title="@($"Tafsir Kemenag Q.S. {Model.JuzDetails[i].Ayah.Surah.Id}:{Model.JuzDetails[i].Ayah.AyahId}")"><i class="fa fa-book"></i></button>
+                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + Model.JuzDetails[i].Id)" onclick="setCookie('@Model.JuzDetails[i].Ayah.Id','@Model.JuzDetails[i].Ayah.Id','100')"><i id="bookmark@(Model.JuzDetails[i].Ayah.Id)" class="fa @bookmarks"></i></button>
+                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Tandai Terakhir Dibaca" id="@("btnLastAyah" + Model.JuzDetails[i].Id)" onclick='setLastAyah("100","@Model.JuzDetails[i].SurahId","@Model.JuzDetails[i].Ayah.Surah.NameLatin","@Model.JuzDetails[i].Ayah.AyahId","@Model.JuzDetails[i].Id","@Model.JuzDetails[i].JuzId")'><i id="lastAyah@(Model.JuzDetails[i].Id)" class="fa fa-sticky-note"></i></button>
+
+                    <audio id="@playerID" onpause="pauseAudio('@(i+1)')">
+                        <source src="@($"{Model.AppSettingOption.MP3Url}{Model.JuzDetails[i].Ayah.SurahId:000}{Model.JuzDetails[i].Ayah.AyahId:000}.mp3")" type="audio/mp3" />
+                    </audio>
+                    @*<a class="btn btn-outline-dark" _blank" href="~/Quran/JuzDetail/1"><i class="fa fa-pause"></i></a>*@
+                    @*<button type="button" onclick="showTafsir('@Model.ID', '@(i + 1)')" id="@($"btnTafsir{Model.Ayahs[i].AyahId}")">Tafsir</button>*@
+                </div>
+            </div>
+            @*<div class="col-sm-10 col-10 col-lg-11 text-right">*@
+            <div class="col-12 text-right">
+                <p class="h2 arab">@Model.JuzDetails[i].Ayah.ReadText</p>
+            </div>
+            <div class="col-12 text-justify">
+                <p>@Model.JuzDetails[i].Ayah.ReadIndo</p>
+            </div>
+            <div class="col-12 text-justify @border">
+                <p class="translate"><small>@Model.JuzDetails[i].Ayah.TranslateIndo</small></p>
+            </div>
+        </div>
+
+            start = Model.JuzDetails[i].SurahId;
+            row++;
+        }
+        <partial name="_Navigation" model="Model.Navigation" />
+    </div>
+</div>
+<partial name="_TafsirModal" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var juzID = $("#searchJuzID").val();
+        scrollToAyah(juzID);
+
+        //$("#btnSearch").click(function () {
+        //    var juzID = $("#txtSearch").val();
+        //    scrollToJuz(juzID);
+        //});
+
+        //$('#txtSearch').on('keypress', function (e) {
+        //    if (e.which === 13) {
+        //        var juzID = $("#txtSearch").val();
+        //        scrollToJuz(juzID);
+        //    }
+        //});
+
+
+        $('#tafsirModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            //var recipient = button.data('tafsir'); // Extract info from data-* attributes
+            var id = button.data('id');
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: '/Quran/JuzDetail?handler=Tafsir&id=' + id,
+                /*data: "{'name':'" + $("#<%=txtFilterCustomer.ClientID%>").val() + "'}",*/
+                //data: city,
+                dataType: "json",
+                success: function (data) {
+                    var modal = $('#tafsirModal');
+                    modal.find('.modal-title').text(button.data('title'));
+                    modal.find('.modal-body #tafsirText').html(data);
+                },
+                failure: function (response) {
+                    /*alert(response.responseText);*/
+                    $.confirm({
+                        title: 'Error',
+                        content: response.responseText,
+                        autoClose: 'ok|2000',
+                        buttons: {
+                            ok: {
+                                text: 'OK',
+                                action: function () {
+
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+            //var modal = $(this);
+            ////modal.find('.modal-title').text('New message to ' + recipient)
+            ////modal.find('.modal-body textarea').val(recipient)
+            //modal.find('.modal-title').text(button.data('title'));
+            //modal.find('.modal-body #tafsirText').html(recipient);
+        })
+
+
+
+        //$('.searchList').on('change', function () {
+        $('#searchJuzIDHeader').on('change', function () {
+            //ways to retrieve selected option and text outside handler
+            //console.log('Changed option value ' + this.value);
+            //console.log('Changed option text ' + $(this).find('option').filter(':selected').text());
+            var origin = window.location.origin;
+            window.location.replace(origin + "/Quran/JuzDetail/" + $(this).val() + '/1');
+            //alert(origin + "Quran/SurahDetail/" + this.value);
+        });
+        $('#searchJuzIDDetail').on('change', function () {
+            var origin = window.location.origin;
+            scrollToJuz($(this).val());
+        });
+    });
+</script>
+
+<style type="text/css">
+</style>
+

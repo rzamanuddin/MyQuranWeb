@@ -1,0 +1,58 @@
+﻿@page
+@model MyQuranWeb.Pages.Quran.ListJuzModel
+@{
+    ViewData["Title"] = "Daftar Juz";
+}
+
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">Daftar Juz</p>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            @*@for (int i = 0; i < Model.JuzHeaders.Count; i++)
+            {
+                var jh = Model.JuzHeaders[i];
+                //@if (i < 38)
+                //{
+                <div class="col-12 text-leftleft">
+                    <a class="h5" href="~/Quran/JuzDetail?id=@jh.Id">@jh.HeaderDescription</a>
+                </div>
+                //}
+            }*@
+
+            <table class="table table-sm table-striped table-hover table-borderless">
+                @*@for (int i = 0; i < Model.JuzHeaders.Count; i++)
+        {
+            var jh = Model.JuzHeaders[i];
+            <tr>
+                <td><a href="~/Quran/JuzDetail?id=@jh.Id" target="_blank">@jh.HeaderDescription</a></td>
+            </tr>
+        }*@
+                @for (int i = 0; i < Model.JuzHeaders.Count; i++)
+                {
+                    if (!Model.IsMobileDevice)
+                    {
+                        <tr>
+                            @for (int c = 0; c < 2; c++)
+                            {
+                                var j = Model.JuzHeaders[i + c];
+                                <td class="text-justify"><a href="~/Quran/JuzDetail/@j.Id" target="_blank" class="text-decoration-none text-dark small">@j.HeaderDescription</a></td>
+                            }
+                        </tr>
+                        i += 1;
+                    }
+                    else
+                    {
+                        <tr>
+                            @{
+                                var j = Model.JuzHeaders[i];
+                                <td><a href="~/Quran/JuzDetail/@j.Id" target="_blank" class="text-decoration-none text-dark">@j.HeaderDescription</a></td>
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>

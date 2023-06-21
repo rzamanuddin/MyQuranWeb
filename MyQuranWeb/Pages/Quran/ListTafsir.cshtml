@@ -1,0 +1,50 @@
+﻿@page
+@model MyQuranWeb.Pages.Quran.ListTafsirModel
+@{
+    ViewData["Title"] = $"Daftar Tafsir Kemenag";
+}
+
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">Daftar Tafsir</p>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            @*@for (int i = 0; i < Model.Surahs.Count; i++)
+            {
+                var s = Model.Surahs[i];
+                //@if (i < 38)
+                //{
+                <div class="col-4 text-left">
+                    <a href="~/Quran/TafsirDetail/@s.Id">@s.Header</a>
+                </div>
+                //}
+            }*@
+            <table class="table table-sm table-striped table-hover table-borderless">
+                @for (int i = 0; i < Model.Surahs.Count; i++)
+                {
+                    if (!Model.IsMobileDevice)
+                    {
+                        <tr>
+                            @for (int c = 0; c < 3; c++)
+                            {
+                                var s = Model.Surahs[i + c];
+                                <td><a href="~/Quran/TafsirDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.HeaderOnly</a></td>
+                            }
+                        </tr>
+                        i += 2;
+                    }
+                    else
+                    {
+                        <tr>
+                            @{
+                                var s = Model.Surahs[i];
+                                <td><a href="~/Quran/TafsirDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.Header</a></td>
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>

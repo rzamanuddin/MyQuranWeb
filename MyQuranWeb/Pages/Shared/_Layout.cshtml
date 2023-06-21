@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Al-Qur'an Bahasa Indonesia</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/js/ayah.js"></script>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link href="~/css/Toast.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Al-Qur'an</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Quran/ListJuz">Juz</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Quran/ListTafsir">Tafsir</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Quran/ListBookmark">Bookmark</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownLastRead" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Terakhir Dibaca
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownLastRead">
+                                <a class="dropdown-item" href="#" onclick="openAyahFromMenu('0')">Buka Sebagai Surat</a>
+                                <a class="dropdown-item" href="#" onclick="openAyahFromMenu('1')">Buka Sebagai Juz</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Quran/Find">Pencarian</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownJadwalSholat" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Jadwal Sholat
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownJadwalSholat">
+                                <a class="dropdown-item" asp-page="/PraySchedule/Index">Per Hari</a>
+                                <a class="dropdown-item" href="/PraySchedule/Monthly">Per Bulan</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="mailto:rzamanuddin@gmail.com">Saran & Kritik</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - Al-Qur'an Bahasa Indonesia - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(function () {
+        });
+
+
+        function openAyahFromMenu(type) {
+            var origin = window.location.origin
+            var lastRead = getCookie('lastAyah');
+            var splittedText = lastRead.split("|");
+            if (lastRead != "") {
+                //var isConfirmed = confirm("Ayat terakhir dibaca Q.S. " + splittedText[0] + " " + splittedText[1] + " Ayat " + splittedText[2] + ".");
+                //if (isConfirmed) {
+                //    if (type == 0) {
+                //        window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
+                //    }
+                //    else {
+                //        window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
+                //    }
+                //}
+
+                //$.confirm({
+                //    title: 'Konfirmasi',
+                //    content: "Ayat terakhir dibaca Q.S. " + splittedText[0] + " " + splittedText[1] + " Ayat " + splittedText[2] + ".",
+                //    buttons: {
+                //        confirm: function () {
+                //            if (type == 0) {
+                //                window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
+                //            }
+                //            else {
+                //                window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
+                //            }
+                //        },
+                //        cancel: function () {
+                //        }
+                //    }
+                //});
+
+                $.confirm({
+                    title: 'Konfirmasi',
+                    content: "Ayat terakhir dibaca Q.S. " + splittedText[0] + " " + splittedText[1] + " Ayat " + splittedText[2] + ".",
+                    autoClose: 'cancel|6000',
+                    buttons: {
+                        ok: {
+                            text: 'OK',
+                            action: function () {
+                                if (type == 0) {
+                                    window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
+                                }
+                                else {
+                                    window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
+                                }
+                            }
+                        },
+                        cancel: function () {
+                        }
+                    }
+                });
+            }
+            else {
+                //$.alert({
+                //    title: "Terakhir Dibaca",
+                //    content: "Ayat terakhir belum ditandai."
+                //});
+
+                $.confirm({
+                    title: 'Terakhir Dibaca',
+                    content: "Ayat terakhir belum ditandai.",
+                    autoClose: 'ok|3000',
+                    buttons: {
+                        ok: {
+                            text: 'OK',
+                            action: function () {
+                                if (type == 0) {
+                                    window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
+                                }
+                                else {
+                                    window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        .smartControl {
+            top: 3em;
+            padding-left: 1em;
+            z-index: 1;
+        }
+
+        .control {
+            position: sticky;
+        }
+    </style>
+</body>
+</html>

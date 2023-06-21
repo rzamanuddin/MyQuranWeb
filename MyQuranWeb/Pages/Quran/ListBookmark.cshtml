@@ -1,0 +1,52 @@
+﻿@page
+@model MyQuranWeb.Pages.Quran.ListBookmarkModel
+@{
+    ViewData["Title"] = "Daftar Bookmark Ayat";
+}
+<script src="~/js/ayah.js"></script>
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">Daftar Bookmark</p>
+    </div>
+    <div class="card-body">
+        <form method="get">
+            <div class="form-group">
+                <div class="input-group input-group-sm mb-3">
+                    <input type="search" class="form-control form-control-sm" asp-for="Search" placeholder="Cari bookmark"
+                           aria-label="Masukkan kata kunci"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-dark" type="submit" id="btnSearch" title="Cari bookmark"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-outline-dark" type="button" id="btnReset" title="Reset pencarian"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <table class="table table-sm table-striped table-hover table-borderless">
+            <tr>
+                <th>Bookmark</th>
+                <th class="text-center">Buka</th>
+                <th class="text-center">Hapus</th>
+            </tr>
+            @for (int i = 0; i < Model.Bookmarks.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Bookmarks[i].Description</td>
+                    <td class="text-center">
+                        <a class="text-decoration-none" href="/Quran/SurahDetail/@Model.Bookmarks[i].Ayah.SurahId/@Model.Bookmarks[i].Ayah.AyahId" target="_blank">Surat</a> / 
+                        <a class="text-decoration-none" href="/Quran/JuzDetail/@Model.Bookmarks[i].Ayah.JuzDetail.JuzId/@Model.Bookmarks[i].Ayah.Id" target="_blank">Juz</a>                        
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm" title="Hapus Bookmark" onclick='deleteBookmark("@Model.Bookmarks[i].Ayah.Id","@Model.Bookmarks[i].Description","/Quran/ListBookmark")'><i class="fa fa-trash fa-lg"></i></button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#btnReset").click(function () {
+            location.href = location.origin + "/Quran/ListBookmark";
+        });
+    });
+</script>

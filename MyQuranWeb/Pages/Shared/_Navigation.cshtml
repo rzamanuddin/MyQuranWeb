@@ -1,0 +1,30 @@
+﻿@model MyQuranWeb.Domain.Models.Navigation
+
+<div class="form-group text-right">
+    <div class="btn-group btn-group-sm" role="group">
+        @{
+            var page = "surahDetail";
+            int lastPage = 114;
+
+            if (Model.Type == 1)
+            {
+                page = "JuzDetail";
+                lastPage = 30;
+            }
+            else if (Model.Type == 2)
+            {
+                page = "TafsirDetail";
+            }
+            if (Model.ID.HasValue && Model.ID.Value > 1)
+            {
+                <a class="btn btn-outline-dark" href="/Quran/@(page)/1"><i class="fa fa-angle-double-left fa-2x"></i></a>
+                <a class="btn btn-outline-dark" href="/Quran/@(page)/@(Model.ID.Value - 1)"><i class="fa fa-angle-left fa-2x"></i></a>
+            }
+            if (Model.ID.HasValue && Model.ID.Value < lastPage)
+            {
+                <a class="btn btn-outline-dark" href="/Quran/@(page)/@(Model.ID.Value + 1)"><i class="fa fa-angle-right fa-2x"></i></a>
+                <a class="btn btn-outline-dark" href="/Quran/@(page)/@(lastPage)"><i class="fa fa-angle-double-right fa-2x"></i></a>
+            }
+        }
+    </div>
+</div>
