@@ -1,0 +1,141 @@
+﻿@page
+@model MyQuranWeb.Pages.SettingModel
+@{
+    ViewData["Title"] = $"Pengaturan";
+}
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">@ViewData["Title"]</p>
+    </div>
+    <div class="card-body">
+        @{ 
+            var headers = new string[]
+            {
+                "Transliterasi Latin",
+                "Terjemahan",
+                "Ukuran Teks Arab",
+                "Qari"
+            };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+            <div class="form-group form-row">
+                <div class="col-11 text-left text-dark">
+                    <strong>@headers[i]</strong>
+                </div>
+                <div class="col-1 text-sm-right">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="collapse" data-target=".multi-collapse@(i)"
+                            onclick="expandCollapse(@i)" title="Expand / Collapse">
+                        <i class="fa fa-angle-down" id="btnExpand@(i)"></i>
+                    </button>
+                </div>
+            </div>
+            @if (headers[i].Contains("Transliterasi"))
+            {
+                <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
+                    <civ class="col">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="switchTransliterasi" onchange="setttingApp('transliterasiSetting', (this.checked ? 1 : 0), 100, 'Setting')">
+                            <label class="custom-control-label" for="switchTransliterasi">Aktifkan Transliterasi</label>
+                        </div>
+                    </civ>
+                </div>
+            }
+            else if (headers[i].Contains("Terjemahan"))
+            {
+                <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
+                    <civ class="col">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="switchTerjemahan" onchange="setttingApp('terjemahanSetting', (this.checked ? 1 : 0), 100, 'Setting')">
+                            <label class="custom-control-label" for="switchTerjemahan">Aktifkan Terjemahan</label>
+                        </div>
+                    </civ>
+                </div>
+            }
+            else if (headers[i].Contains("Ukuran Teks Arab"))
+            {
+                <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize0" value="kecil" onchange="setttingApp('ukuranTeksSetting', 0, 100, 'Setting')">
+                            <label class="form-check-label" for="optFontSize0">Kecil</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize1" value="sedang" onchange="setttingApp('ukuranTeksSetting', 1, 100, 'Setting')">
+                            <label class="form-check-label" for="optFontSize1">Sedang</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize2" value="besar" onchange="setttingApp('ukuranTeksSetting', 2, 100, 'Setting')">
+                            <label class="form-check-label" for="optFontSize2">Besar</label>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (headers[i].Contains("Qari"))
+            {
+                <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optQari" id="optQari0" value="0" onchange="setttingApp('qariSetting', 0, 100, 'Setting')">
+                            <label class="form-check-label" for="optQari0">Al-Afasy</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optQari" id="optQari1" value="1" onchange="setttingApp('qariSetting', 1, 100, 'Setting')">
+                            <label class="form-check-label" for="optQari1">As-Sudais</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optQari" id="optQari2" value="2" onchange="setttingApp('qariSetting', 2, 100, 'Setting')">
+                            <label class="form-check-label" for="optQari2">Al-Mathrud</label>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        var isExistSetting = getCookie('transliterasiSetting');
+        if (!isExistSetting || (isExistSetting && isExistSetting == 1)) {
+            $("#switchTransliterasi").prop('checked', true);
+        }
+
+        isExistSetting = getCookie('terjemahanSetting');
+        if (!isExistSetting || (isExistSetting && isExistSetting == 1)) {
+            $("#switchTerjemahan").prop('checked', true);
+        }
+
+        isExistSetting = getCookie('ukuranTeksSetting');
+        if (!isExistSetting || (isExistSetting && isExistSetting == 0)) {
+            $("#optFontSize0").prop('checked', true);
+        }
+        else {
+            $("#optFontSize" + isExistSetting).prop('checked', true);
+        }
+
+        isExistSetting = getCookie('qariSetting');
+        if (!isExistSetting || (isExistSetting && isExistSetting == 0)) {
+            $("#optQari0").prop('checked', true);
+        }
+        else {
+            $("#optQari" + isExistSetting).prop('checked', true);
+        }
+    });
+
+    function setupTransliterasi(chk) {
+        if (chk.checked) {
+            alert(chk.checked);
+        }
+
+    }
+
+    function expandCollapse(id) {
+        var btnExC = $("#btnExpand" + id);
+        if (btnExC.hasClass("fa-angle-down")) {
+            $("#btnExpand" + id).removeClass("fa fa-angle-down");
+            $("#btnExpand" + id).addClass("fa fa-angle-up");
+        } else {
+            $("#btnExpand" + id).removeClass("fa fa-angle-up");
+            $("#btnExpand" + id).addClass("fa fa-angle-down");
+        }
+    }
+</script>

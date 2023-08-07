@@ -39,7 +39,24 @@
             </div>
             <div class="form-group row"></div>
         </form>
-        @{int start = 0; int rowID = 1; }
+
+        @{
+            string hideTransliterasi = "";
+            if (!string.IsNullOrWhiteSpace(Request.Cookies["transliterasiSetting"])
+                && Request.Cookies["transliterasiSetting"] == "0")
+            {
+                hideTransliterasi = "hide text-hide";
+            }
+
+            string hideTerjemahan = "";
+            if (!string.IsNullOrWhiteSpace(Request.Cookies["terjemahanSetting"])
+                && Request.Cookies["terjemahanSetting"] == "0")
+            {
+                hideTerjemahan = "hide text-hide";
+            }
+            int start = 0; int rowID = 1; 
+        }
+
         @for (int i = 0; i < Model.Ayahs.Count; i++)
         {
             var alternateColor = "";
@@ -90,7 +107,7 @@
                         @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Tandai Terakhir Dibaca" id="@("btnLastAyah" + Model.Ayahs[i].Id)" onclick='setLastAyah("100","@Model.Ayahs[i].SurahId","@Model.Ayahs[i].Surah.NameLatin","@Model.Ayahs[i].AyahId","@Model.Ayahs[i].Id","@Model.Ayahs[i].JuzDetail.JuzId")'><i id="lastAyah@(Model.Ayahs[i].Id)" class="fa fa-sticky-note"></i></button>*@
 
                         <audio id="@playerID" onpause="pauseAudio('@(i+1)')">
-                            <source src="@($"{Model.AppSettingOption.MP3Url}{Model.Ayahs[i].SurahId:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
+                            <source src="@($"{Model.AppSettingOption.MP3UrlSetting}{Model.Ayahs[i].SurahId:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
                         </audio>
                         @*<a class="btn btn-outline-dark" _blank" href="~/Quran/JuzDetail/1"><i class="fa fa-pause"></i></a>*@
                         @*<button type="button" onclick="showTafsir('@Model.ID', '@(i + 1)')" id="@($"btnTafsir{Model.Ayahs[i].AyahId}")">Tafsir</button>*@
@@ -103,10 +120,10 @@
                 <div class="col-12 text-right">
                     <p class="h2 arab">@Model.Ayahs[i].ReadText</p>
                 </div>
-                <div class="col-12 text-justify">
+                <div class="col-12 text-justify @hideTransliterasi">
                     <p>@Model.Ayahs[i].ReadIndo</p>
                 </div>
-                <div class="col-12 text-justify">
+                <div class="col-12 text-justify @hideTerjemahan">
                     <p class="translate"><small>@Model.Ayahs[i].TranslateIndo</small></p>
                 </div>
             </div>

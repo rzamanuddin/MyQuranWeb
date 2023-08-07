@@ -15,21 +15,21 @@ namespace MyQuranWebRepository
     {
         public static IServiceCollection AddRepository(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddTransient<ICompanyRegistrationRepository, CompanyRegistrationRepository>();
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //services.AddTransient<ICompanyRegistrationRepository, CompanyRegistrationRepository>();
-            //services.AddTransient<IProductRepository, ProductRepository>();
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<ICompanyRegistrationRepository, CompanyRegistrationRepository>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<ICompanyRegistrationRepository, CompanyRegistrationRepository>();
+            //services.AddScoped<IProductRepository, ProductRepository>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //services.AddDbContext<Models.Altus.AltusContext>(opt => opt
             //    .UseSqlServer("Server=ID1VMK8-05; Database=Altus; User ID=logweb; Password=tomcat;"));
 
-            services.AddTransient<IAyahRepository, AyahRepository>();
-            services.AddTransient<ISurahRepository, SurahRepository>();
-            services.AddTransient<ITafsirRepository, TafsirRepository>();
-            services.AddTransient<IJuzHeaderRepository, JuzHeaderRepository>();
-            services.AddTransient<IJuzDetailRepository, JuzDetailRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAyahRepository, AyahRepository>();
+            services.AddScoped<ISurahRepository, SurahRepository>();
+            services.AddScoped<ITafsirRepository, TafsirRepository>();
+            services.AddScoped<IJuzHeaderRepository, JuzHeaderRepository>();
+            services.AddScoped<IJuzDetailRepository, JuzDetailRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services.AddOptions<AppSettingModel>();
 
             services.AddDbContext<MyQuranContext>(opt =>

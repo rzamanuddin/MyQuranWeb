@@ -324,6 +324,56 @@ function setCookie(cname, cvalue, exdays) {
     }
 }
 
+function setttingApp(cname, cvalue, exdays, title) {
+    var isValid = checkCookie(cname);
+    var expires = "expires=Thu, 01 Jan 1970 00:00:00"
+    if (!isValid) {
+        //if (cname == "ukuranTeksSetting" || cname == "qariSetting") {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            expires = "expires=" + d.toUTCString();
+
+            // Set to zero (0)
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        //}
+        //else {
+        //    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        //}
+
+        $.confirm({
+            title: 'Setting',
+            content: title + " berhasil diubah.",
+            autoClose: 'ok|1000',
+            buttons: {
+                ok: {
+                    text: 'OK',
+                    action: function () {
+                    }
+                }
+            }
+        });
+    }
+    else {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+        $.confirm({
+            title: 'Setting',
+            content: title + " berhasil diubah.",
+            autoClose: 'ok|1000',
+            buttons: {
+                ok: {
+                    text: 'OK',
+                    action: function () {
+                    }
+                }
+            }
+        });
+    }
+}
+
 function deleteBookmark(cname, description, url) {
     //var isConfirmed = confirm('Apakah anda yakin ingin menghapus bookmark ?')
     //$.confirm({
