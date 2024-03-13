@@ -1,0 +1,53 @@
+﻿@page "/"
+@inherits PageBase;
+
+<PageTitle>@PageTitle</PageTitle>
+
+@if (!String.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div id="error" class="alert alert-danger text-danger">
+        <span>@ErrorMessage</span>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header text-center">
+        @if (!TypeID.HasValue)
+        {
+            <p class="h2">@PageTitle</p>
+        }
+        else
+        {
+            <p class="h2">@PageTitle</p>
+        }
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <table class="table table-sm table-striped table-hover table-borderless">
+                @for (int i = 0; i < Surahs.Count; i++)
+                {
+                    if (!IsMobileDevice)
+                    {
+                        <tr>
+                            @for (int c = 0; c < 3; c++)
+                            {
+                                var s = Surahs[i + c];
+                                <td><a href="Qurans/SurahDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.HeaderOnly</a></td>
+                            }
+                        </tr>
+                        i += 2;
+                    }
+                    else
+                    {
+                        <tr>
+                            @{
+                                var s = Surahs[i];
+                                <td><a href="~/Quran/SurahDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.Header</a></td>
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>

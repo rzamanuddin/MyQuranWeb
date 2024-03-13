@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyQuranWeb.Domain\MyQuranWeb.Domain.csproj" />
+    <ProjectReference Include="..\MyQuranWebRepository\MyQuranWebRepository.csproj" />
+    <ProjectReference Include="..\MyQuranWeb\MyQuranWeb.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models;
+using MyQuranWeb.Library.Options;
 using Newtonsoft.Json;
 
 namespace MyQuranWeb.Pages.Quran
@@ -35,9 +37,10 @@ namespace MyQuranWeb.Pages.Quran
             }
         }
 
-        public TafsirDetailModel(IUnitOfWork unitOfWork)
+        public TafsirDetailModel(IUnitOfWork unitOfWork, IOptions<AppSettingOption> appSettingOption)
         {
             this.unitOfWork = unitOfWork;
+            AppSettingOption = appSettingOption.Value;
         }
 
         public Surah Surah { get; set; } = new Surah();
@@ -56,6 +59,10 @@ namespace MyQuranWeb.Pages.Quran
                 {
                     this.Surah = (await unitOfWork.Surahs.GetByID(ID.Value));
                     //Tafsirs = (await unitOfWork.Tafsirs.GetBySurahID(ID.Value)).ToList();
+                    if (Surah == null)
+                    {
+                        throw new Exception("Tafsir tidak ditemukan.");
+                    }
                 }
                 else
                 {
@@ -111,6 +118,31 @@ namespace MyQuranWeb.Pages.Quran
             {
                 ErrorMessage = ex.Message;
                 return new JsonResult(ex.Message) { StatusCode = (int)HttpStatusCode.InternalServerError };
+            }
+        }
+
+        public async Task<JsonResult> OnGetTafsirAsync(int surahId, int ayahId)
+        {
+            try
+            {
+                var tafsir = await unitOfWork.TafsirsNew.GetBySurahAndAyahID(surahId, ayahId);
+                if (tafsir != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(Request.Cookies["tafsirSetting"])
+                        && Request.Cookies["tafsirSetting"] == "1")
+                    {
+                        return new JsonResult(tafsir.Data.AlJalalain);
+                    }
+
+                    return new JsonResult(tafsir.Data.Kemenag.ToString());
+                }
+
+                return new JsonResult("");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                return new JsonResult("");
             }
         }
     }

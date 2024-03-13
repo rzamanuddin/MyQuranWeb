@@ -1,0 +1,99 @@
+﻿@page "{pageNumber:int?}/{hadithNumber:int?}"
+@model MyQuranWeb.Pages.Hadith.HadithBMDetailModel
+@{
+    ViewData["Title"] = $"Hadis Bulughul Maram";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+else
+{
+    <div id="snackbar"></div>
+    <div class="form-group form-row">
+        <div class="col-12 text-right">
+            <partial name="_Navigation" model="Model.Navigation" />
+        </div>
+    </div>
+    <div class="form-group form-row">
+        <label class="col-lg-10 col-md-8 col-sm-6 col-6 text-right font-weight-bold" for="@Model.PageNumber">Pilih :</label>
+        <div class="col-sm-3 col-md-2 col-lg-1 col-3">
+            <select asp-for="@Model.PageNumber" asp-items="Model.PageList" class="form-control form-control-sm searchList" id="searchPageNumber" data-toggle="tooltip" title="Halaman Hadis">
+            </select>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-1 col-3">
+            <select asp-for="@Model.HadithNumber" asp-items="Model.HadithList" class="form-control form-control-sm searchList" id="searchHadithNumber" data-toggle="tooltip" title="Nomor Hadis">
+            </select>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@ViewData["Title"]</p>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.HadithBMs.Count; i++)
+            {
+                var alternateColor = "";
+                var bookmarks = "fa-bookmark-o";
+                var cookieName = $"book_hadith_bm_{Model.PageNumber}_{Model.HadithBMs[i].No}";
+                var cookieValue = Model.HadithBMs[i].No.ToString();
+                if (!string.IsNullOrEmpty(Request.Cookies[cookieName]))
+                {
+                    bookmarks = "fa-bookmark";
+                }
+                @if (@Model.HadithBMs[i].No % 2 == 1) { alternateColor = "alert-secondary"; }
+                <div class="form-group form-row @alternateColor text-dark" id="div_@Model.HadithBMs[i].No">
+                    <div class="col-2 text-left small">
+                        <p>@Model.HadithBMs[i].No</p>
+                    </div>
+                    <div class="col-10 text-right">
+                        <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Hadis & Terjemah" id="@("btnCopy" + i)" onclick='copyHadithBM("@i","@Model.HadithBMs[i].No","@Model.HadithBMs[i].Arab", "@Html.Encode(Model.HadithBMs[i].Id)")'><i class="fa fa-clone"></i></button>
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + cookieName)" onclick="setCookie('@cookieName','@cookieValue','100')"><i id="bookmark@(cookieName)" class="fa @bookmarks"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p class="h3 arab">@Model.HadithBMs[i].Arab</p>
+                    </div>
+                    <div class="col-12 text-justify">
+                        <p class="translate" id="hadithTranslate@(i)"><small>@Model.HadithBMs[i].Id</small></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+<style type="text/css">
+    .smartControl {
+        top: 3em;
+        padding-left: 1em;
+        z-index: 1;
+    }
+
+    .control {
+        position: sticky;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+
+        var hadithNumber = $("#searchHadithNumber").val();
+        scrollToAyah(hadithNumber);
+
+        $('#searchPageNumber').on('change', function () {
+            var origin = window.location.origin;
+            window.location.replace(websiteUrl + "/Hadith/HadithBMDetail/" + $(this).val());
+        });
+
+        $('#searchHadithNumber').on('change', function () {
+            var origin = window.location.origin;
+            scrollToAyah($(this).val());
+        });
+    });
+
+</script>

@@ -23,7 +23,7 @@ function scrollToJuz(juzID) {
 }
 
 function copyToClipboard(index, ayahID, surahID, ayah, textIndo, translateIndo) {
-    var copiedText = "Q.S. " + surahID + ":" + (parseInt(index) + 1) + "\n" + ayah + "\n" + textIndo + "\n" + translateIndo;
+    var copiedText = "Q.S. " + surahID + ":" + (parseInt(index) + 1) + "\n\n" + ayah + "\n\n" + textIndo + "\n\n" + translateIndo + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
 
     var $temp = $("<textarea>");
 
@@ -56,6 +56,95 @@ function copyToClipboard(index, ayahID, surahID, ayah, textIndo, translateIndo) 
     });
 }
 
+function copyHadith(index, name, hadithNo, arabText, translateIndo) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateIndo;
+
+    var copiedText = "H.R. " + name + " No. " + hadithNo + "\n\n" + arabText + "\n\n" + txt.value + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: 'Salin Hadis',
+        content: "H.R. " + name + " No. " + hadithNo + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
+
+function copyHadithArbain(index, judul, hadithNo, arabText, translateIndo) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateIndo;
+
+    var copiedText = "Hadis Arbain No. " + hadithNo + " " + judul + "\n\n" + arabText + "\n\n" + txt.value + "\n\n*Via MyQuranWeb Indonesia \n"  + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: 'Salin Hadis',
+        content: "Hadis Arbain No. " + hadithNo + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
+
+function copyHadithBM(index, hadithNo, arabText, translateId) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateId;
+
+    var copiedText = "Hadis Bulughul Maram No. " + hadithNo + "\n\n" + arabText + "\n\n" + txt.value + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: 'Salin Hadis',
+        content: "Hadis Bulughul Maram No. " + hadithNo + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
 
 //function copyAyah(ayahID, surahID, ayah, textIndo, translateIndo) {
 //    var copiedText = "Q.S. " + surahID + ":" + ayahID + "\n" + ayah + "\n" + textIndo + "\n" + translateIndo;
@@ -93,7 +182,7 @@ function copyAyah() {
     var readTextIndo = modal.find('.modal-body #ayahReadIndo').html() + "\n";
     var translateIndo = modal.find('.modal-body #ayahTranslateIndo').html() + "\n";
 
-    var copiedText = title + readText + readTextIndo +  translateIndo;
+    var copiedText = title + readText + readTextIndo + translateIndo + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
 
     var $temp = $("<textarea id='txtCopiedAyah'>");
 
@@ -118,7 +207,7 @@ function copyAyah() {
 }
 
 function copyTafsirText(index, surahID, tafsirText) {
-    var copiedText = "Tafsir Kemenag Q.S. " + surahID + ":" + (parseInt(index) + 1) + "\n" + tafsirText;
+    var copiedText = "Tafsir Kemenag Q.S. " + surahID + ":" + (parseInt(index) + 1) + "\n" + tafsirText + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
     var $temp = $("<textarea>");
 
     $("body").append($temp);
@@ -150,7 +239,7 @@ function copyTafsirText(index, surahID, tafsirText) {
 
 function copyTafsir() {
     var modal = $("#tafsirModal");
-    var copiedText = modal.find('.modal-title').text() + "\n\n" + modal.find('.modal-body #tafsirText').html();
+    var copiedText = modal.find('.modal-title').text() + "\n\n" + modal.find('.modal-body #tafsirText').html() + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
     var $temp = $("<textarea>");
 
     modal.append($temp);
@@ -181,7 +270,7 @@ function copyTafsirBasedOnIndex(index) {
     //var modal = $("#tafsirModal");
     var btnCopy = $("#btnCopy" + index);
     //$(this).data("id")
-    var copiedText = btnCopy.data("title") + "\n" + btnCopy.data("tafsir");  //modal.find('.modal-title').text() + "\n\n" + modal.find('.modal-body #tafsirText').html();
+    var copiedText = btnCopy.data("title") + "\n" + btnCopy.data("tafsir") + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;  //modal.find('.modal-title').text() + "\n\n" + modal.find('.modal-body #tafsirText').html();
 
     var $temp = $("<textarea>");
     $("body").append($temp);
@@ -324,7 +413,7 @@ function setCookie(cname, cvalue, exdays) {
     }
 }
 
-function setttingApp(cname, cvalue, exdays, title) {
+function settingApp(cname, cvalue, exdays, title) {
     var isValid = checkCookie(cname);
     var expires = "expires=Thu, 01 Jan 1970 00:00:00"
     if (!isValid) {
@@ -489,24 +578,43 @@ function pauseAudio(id) {
     playBtn.addClass("fa fa-play");
 }
 
+function playAudioSurah(controlName) {
+    var audio = document.getElementById("audioElement");
+    var playBtn = $("#" + controlName)
+    if (audio.currentTime > 0 && !audio.paused) {
+        playBtn.removeClass();
+        playBtn.addClass("fa fa-play");
+        audio.pause();
+    } else {
+        playBtn.removeClass();
+        playBtn.addClass("fa fa-pause");
+        audio.play();
+    }
+}
+
 function muteAudio(id) {
     var playerID = document.getElementById('player' + id);
 
     playerID.muted = !playerID.muted
 }
 
-function openAyah(surahID, ayahID) {
+function openAyah(surahID, ayahID, baseUrl) {
     var origin = window.location.origin;
+    if (!(baseUrl === undefined)) {
+        origin = baseUrl;
+    }
     //window.location.href = origin + "/Quran/SurahDetail/" + surahID + '/' + ayahID;    
     window.open(origin + "/Quran/SurahDetail/" + surahID + '/' + ayahID, "_blank");
 }
 
-function openJuz(juzID, ayahID) {
+function openJuz(juzID, ayahID, baseUrl) {
     var origin = window.location.origin;
+    if (!(baseUrl === undefined)) {
+        origin = baseUrl;
+    }
     //window.location.href = origin + "/Quran/SurahDetail/" + surahID + '/' + ayahID;    
     window.open(origin + "/Quran/JuzDetail/" + juzID + '/' + ayahID, "_blank");
 }
-
 
 function showToast(message) {
     var x = document.getElementById("snackbar");

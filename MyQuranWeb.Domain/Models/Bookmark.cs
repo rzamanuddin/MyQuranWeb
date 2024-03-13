@@ -7,12 +7,23 @@ using System.Threading.Tasks;
 
 namespace MyQuranWeb.Domain.Models
 {
+    public class HadithBookmark
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Type { get; set; }
+        public int Number { get; set; }
+        public int Page {  get; set; }
+        public string Slug { get; set; }
+    }
+
     public class Bookmark
     {
         public int ID { get; set; }
+        public int Type { get;set; }
 
         public Ayah Ayah { get; set; }
-
+        public HadithBookmark Hadith { get; set; }
         public string Description
         {
             get
@@ -23,6 +34,11 @@ namespace MyQuranWeb.Domain.Models
                 }
                 else
                 {
+                    if (Hadith != null)
+                    {
+                        return Hadith.Description;
+                    }
+
                     return "";
                 }
             }

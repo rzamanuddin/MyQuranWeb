@@ -1,14 +1,61 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Castle.Core.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models;
+using MyQuranWeb.Library.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyQuranWebRepository
 {
+    public class TafsirNewRepository : ITafsirNewRepository
+    {
+        private HttpClient _client = new HttpClient(new SocketsHttpHandler
+        {
+            PooledConnectionLifetime = TimeSpan.FromMinutes(2)
+        });
+
+        private AppSettingOption _appSettingOption;
+
+        public TafsirNewRepository(IOptions<AppSettingOption> appSettingOption) 
+        {
+            _appSettingOption = appSettingOption.Value;
+        }
+
+        public async Task<AyahNew> GetBySurahAndAyahID(int surahID, int ayahID)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, ($"{_appSettingOption.TafsirUrl}/surahs/{surahID}/ayahs/{ayahID}"));
+            using (var response = await _client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<AyahNew>(apiResponse);
+                return result;
+            }
+        }
+
+        public async Task<TafsirApiResult> GetBySurahID(int surahID)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, ($"{_appSettingOption.TafsirUrl}/surahs/{surahID}"));
+            using (var response = await _client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var apiResponse =  await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<TafsirApiResult>(apiResponse);
+                return result;
+            }
+        }
+    }
     public class TafsirRepository : ITafsirRepository
     {
         private MyQuranContext _context;

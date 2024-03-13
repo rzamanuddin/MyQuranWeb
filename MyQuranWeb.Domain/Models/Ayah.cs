@@ -13,6 +13,7 @@ namespace MyQuranWeb.Domain.Models
         public string ReadText { get; set; }
         public string ReadIndo { get; set; }
         public string TranslateIndo { get; set; }
+        public string ReadTextUthmani { get; set; }
 
         public virtual Tafsir Tafsir { get; set; }
         public virtual Surah Surah { get; set; }

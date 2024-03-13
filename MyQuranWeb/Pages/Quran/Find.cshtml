@@ -54,6 +54,23 @@
             {
                 hideTerjemahan = "hide text-hide";
             }
+
+            string fontArab = "arab";
+            string bismillah = "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ";
+            if (!string.IsNullOrWhiteSpace(Request.Cookies["rasmSetting"])
+            && Request.Cookies["rasmSetting"] == "1")
+            {
+                fontArab = "arabUthmani";
+                bismillah = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ";
+            }
+
+            string tafsir = "Kemenag";
+            if (!string.IsNullOrWhiteSpace(Request.Cookies["tafsirSetting"])
+            && Request.Cookies["tafsirSetting"] == "1")
+            {
+                tafsir = "Al-Jalalain";
+            }
+
             int start = 0; int rowID = 1; 
         }
 
@@ -100,7 +117,7 @@
                         @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Mute / Unmute" onclick="document.getElementById('@playerID').muted=!document.getElementById('@playerID').muted"><i id="volumeBtn(@i+1)" class="fa fa-volume-up"></i></button>*@
                         <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Ayat & Terjemah" id="@("btnCopy" + i)" onclick='copyToClipboard("@(Model.Ayahs[i].AyahId-1)","@(Model.Ayahs[i].AyahId)","@Model.Ayahs[i].SurahId","@Model.Ayahs[i].ReadText","@Model.Ayahs[i].ReadIndo","@Model.Ayahs[i].TranslateIndo")'><i class="fa fa-clone"></i></button>
                         @*<button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-tafsir="@Model.Ayahs[i].Tafsir.Kemenag" data-title="@($"Tafsir Kemenag Q.S. {Model.Ayahs[i].SurahId}:{Model.Ayahs[i].AyahId}")"><i class="fa fa-book"></i></button>*@
-                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-id="@Model.Ayahs[i].Id" data-title="@($"Tafsir Kemenag Q.S. {Model.Ayahs[i].SurahId}:{Model.Ayahs[i].AyahId}")"><i class="fa fa-book"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir Kemenag" data-target="#tafsirModal" data-id="@Model.Ayahs[i].Id" data-surahid="@Model.Ayahs[i].SurahId" data-ayahid="@Model.Ayahs[i].AyahId" data-title="@($"Tafsir Kemenag Q.S. {Model.Ayahs[i].SurahId}:{Model.Ayahs[i].AyahId}")"><i class="fa fa-book"></i></button>
                         <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + Model.Ayahs[i].Id)" onclick="setCookie('@Model.Ayahs[i].Id','@Model.Ayahs[i].Id','100')"><i id="bookmark@(Model.Ayahs[i].Id)" class="fa @bookmarks"></i></button>
                         <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Buka Sebagai Surat" id="@("btnOpen" + Model.Ayahs[i].Id)" onclick="openAyah('@Model.Ayahs[i].SurahId','@Model.Ayahs[i].AyahId')"><i class="fa fa-folder"></i></button>
                         <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Buka Sebagai Juz" id="@("btnOpenJuz" + Model.Ayahs[i].Id)" onclick="openJuz('@Model.Ayahs[i].JuzDetail.JuzId','@Model.Ayahs[i].Id')"><i class="fa fa-folder"></i></button>
@@ -118,7 +135,7 @@
                 </div>
                 @*<div class="col-sm-10 col-md-10 col-lg-11 text-right">*@
                 <div class="col-12 text-right">
-                    <p class="h2 arab">@Model.Ayahs[i].ReadText</p>
+                    <p class="h2 @fontArab">@(fontArab == "arab" ? Model.Ayahs[i].ReadText : Model.Ayahs[i].ReadTextUthmani)</p>
                 </div>
                 <div class="col-12 text-justify @hideTransliterasi">
                     <p>@Model.Ayahs[i].ReadIndo</p>
@@ -137,6 +154,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+
         $('#txtSearch').on('keypress', function (e) {
             if (e.which === 13) {
                 //var ayahID = $("#txtSearch").val();
@@ -150,13 +169,14 @@
             var button = $(event.relatedTarget); // Button that triggered the modal
             //var recipient = button.data('tafsir'); // Extract info from data-* attributes
             var id = button.data('id');
+            var ayahId = button.data('ayahid');
+            var surahId = button.data('surahid');
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
-                url: '/Quran/Find?handler=Tafsir&id=' + id,
+                url: websiteUrl + '/Quran/TafsirDetail?handler=Tafsir&surahId=' + surahId + "&ayahId=" + ayahId,
                 /*data: "{'name':'" + $("#<%=txtFilterCustomer.ClientID%>").val() + "'}",*/
                 //data: city,
                 dataType: "json",

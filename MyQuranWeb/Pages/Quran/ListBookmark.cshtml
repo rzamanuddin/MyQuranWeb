@@ -21,26 +21,85 @@
                 </div>
             </div>
         </form>
-        <table class="table table-sm table-striped table-hover table-borderless">
-            <tr>
-                <th>Bookmark</th>
-                <th class="text-center">Buka</th>
-                <th class="text-center">Hapus</th>
-            </tr>
-            @for (int i = 0; i < Model.Bookmarks.Count; i++)
-            {
-                <tr>
-                    <td>@Model.Bookmarks[i].Description</td>
-                    <td class="text-center">
-                        <a class="text-decoration-none" href="/Quran/SurahDetail/@Model.Bookmarks[i].Ayah.SurahId/@Model.Bookmarks[i].Ayah.AyahId" target="_blank">Surat</a> / 
-                        <a class="text-decoration-none" href="/Quran/JuzDetail/@Model.Bookmarks[i].Ayah.JuzDetail.JuzId/@Model.Bookmarks[i].Ayah.Id" target="_blank">Juz</a>                        
-                    </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-sm" title="Hapus Bookmark" onclick='deleteBookmark("@Model.Bookmarks[i].Ayah.Id","@Model.Bookmarks[i].Description","/Quran/ListBookmark")'><i class="fa fa-trash fa-lg"></i></button>
-                    </td>
-                </tr>
-            }
-        </table>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class='nav-item'>
+                <a class='nav-link active' data-toggle='tab' href='#tpQuran'>Al-Qur'an'</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link ' data-toggle='tab' href='#tpHadith'>Hadis</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class='tab-pane container fade in show active' id='tpQuran'>
+                <div class="row">
+                    <table class="table table-sm table-striped table-hover table-borderless">
+                        <tr>
+                            <th>Bookmark</th>
+                            <th class="text-center">Buka</th>
+                            <th class="text-center">Hapus</th>
+                        </tr>
+                        @for (int i = 0; i < Model.Bookmarks.Count; i++)
+                        {
+                            if (Model.Bookmarks[i].Type == 1)
+                            {
+                                <tr>
+                                    <td>@Model.Bookmarks[i].Description</td>
+                                    <td class="text-center">
+                                        <a class="text-decoration-none text-dark" href="~/Quran/SurahDetail/@Model.Bookmarks[i].Ayah.SurahId/@Model.Bookmarks[i].Ayah.AyahId" target="_blank">Surat</a> /
+                                        <a class="text-decoration-none text-dark" href="~/Quran/JuzDetail/@Model.Bookmarks[i].Ayah.JuzDetail.JuzId/@Model.Bookmarks[i].Ayah.Id" target="_blank">Juz</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm" title="Hapus Bookmark" onclick='deleteBookmark("@Model.Bookmarks[i].Ayah.Id","@Model.Bookmarks[i].Description","/Quran/ListBookmark")'><i class="fa fa-trash fa-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class='tab-pane container fade' id='tpHadith'>
+                <div class="row">
+                    <table class="table table-sm table-striped table-hover table-borderless">
+                        <tr>
+                            <th>Bookmark</th>
+                            <th class="text-center">Link</th>
+                            <th class="text-center">Hapus</th>
+                        </tr>
+                        @for (int i = 0; i < Model.Bookmarks.Count; i++)
+                        {
+                            string url = "";
+                            if (Model.Bookmarks[i].Type == 2)
+                            {
+                                <tr>
+                                    <td>@Model.Bookmarks[i].Description</td>
+                                    <td class="text-center">
+                                        @if(Model.Bookmarks[i].Hadith.Name.Contains("arbain"))
+                                        {
+                                            url = $"Hadith/HadithArbainDetail/{Model.Bookmarks[i].Hadith.Number}";
+                                        }
+                                        else if(Model.Bookmarks[i].Hadith.Name.Contains("_bm"))
+                                        {
+                                            url = $"Hadith/HadithBMDetail/{Model.Bookmarks[i].Hadith.Page}/{Model.Bookmarks[i].Hadith.Number}";
+                                        }
+                                        else if (Model.Bookmarks[i].Hadith.Name.Contains("_perawi"))
+                                        {
+                                            url = $"Hadith/HadithDetail/{Model.Bookmarks[i].Hadith.Slug}/{Model.Bookmarks[i].Hadith.Page}/{Model.Bookmarks[i].Hadith.Number}";
+                                        }
+                                        <a class="text-decoration-none text-dark" href="~/@url" target="_blank">Buka</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm" title="Hapus Bookmark" onclick='deleteBookmark("@Model.Bookmarks[i].Hadith.Name","@Model.Bookmarks[i].Description","/Quran/ListBookmark")'><i class="fa fa-trash fa-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>

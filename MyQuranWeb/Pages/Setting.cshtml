@@ -8,17 +8,19 @@
         <p class="h2">@ViewData["Title"]</p>
     </div>
     <div class="card-body">
-        @{ 
-            var headers = new string[]
-            {
-                "Transliterasi Latin",
-                "Terjemahan",
-                "Ukuran Teks Arab",
-                "Qari"
-            };
+    @{ 
+        var headers = new string[]
+        {
+            "Transliterasi Latin",
+            "Terjemahan",
+            "Ukuran Teks Arab",
+            "Rasm (Penulisan)",
+            "Qari",
+            "Tafsir"
+        };
 
-            for (int i = 0; i < headers.Length; i++)
-            {
+        for (int i = 0; i < headers.Length; i++)
+        {
             <div class="form-group form-row">
                 <div class="col-11 text-left text-dark">
                     <strong>@headers[i]</strong>
@@ -35,7 +37,7 @@
                 <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
                     <civ class="col">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="switchTransliterasi" onchange="setttingApp('transliterasiSetting', (this.checked ? 1 : 0), 100, 'Setting')">
+                            <input type="checkbox" class="custom-control-input" id="switchTransliterasi" onchange="settingApp('transliterasiSetting', (this.checked ? 1 : 0), 100, 'Setting')">
                             <label class="custom-control-label" for="switchTransliterasi">Aktifkan Transliterasi</label>
                         </div>
                     </civ>
@@ -46,7 +48,7 @@
                 <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
                     <civ class="col">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="switchTerjemahan" onchange="setttingApp('terjemahanSetting', (this.checked ? 1 : 0), 100, 'Setting')">
+                            <input type="checkbox" class="custom-control-input" id="switchTerjemahan" onchange="settingApp('terjemahanSetting', (this.checked ? 1 : 0), 100, 'Setting')">
                             <label class="custom-control-label" for="switchTerjemahan">Aktifkan Terjemahan</label>
                         </div>
                     </civ>
@@ -57,16 +59,31 @@
                 <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
                     <div class="col">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize0" value="kecil" onchange="setttingApp('ukuranTeksSetting', 0, 100, 'Setting')">
+                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize0" value="kecil" onchange="settingApp('ukuranTeksSetting', 0, 100, 'Setting')">
                             <label class="form-check-label" for="optFontSize0">Kecil</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize1" value="sedang" onchange="setttingApp('ukuranTeksSetting', 1, 100, 'Setting')">
+                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize1" value="sedang" onchange="settingApp('ukuranTeksSetting', 1, 100, 'Setting')">
                             <label class="form-check-label" for="optFontSize1">Sedang</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize2" value="besar" onchange="setttingApp('ukuranTeksSetting', 2, 100, 'Setting')">
+                            <input class="form-check-input" type="radio" name="optFontSize" id="optFontSize2" value="besar" onchange="settingApp('ukuranTeksSetting', 2, 100, 'Setting')">
                             <label class="form-check-label" for="optFontSize2">Besar</label>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (headers[i].Contains("Rasm"))
+            {
+                <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optRasm" id="optRasm0" value="0" onchange="settingApp('rasmSetting', 0, 100, 'Setting')">
+                            <label class="form-check-label" for="optRasm0">Indopak</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optRasm" id="optRasm1" value="1" onchange="settingApp('rasmSetting', 1, 100, 'Setting')">
+                            <label class="form-check-label" for="optRasm1">Usmani</label>
                         </div>
                     </div>
                 </div>
@@ -76,22 +93,39 @@
                 <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
                     <div class="col">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="optQari" id="optQari0" value="0" onchange="setttingApp('qariSetting', 0, 100, 'Setting')">
+                            <input class="form-check-input" type="radio" name="optQari" id="optQari0" value="0" onchange="settingApp('qariSetting', 0, 100, 'Setting')">
                             <label class="form-check-label" for="optQari0">Al-Afasy</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="optQari" id="optQari1" value="1" onchange="setttingApp('qariSetting', 1, 100, 'Setting')">
+                            <input class="form-check-input" type="radio" name="optQari" id="optQari1" value="1" onchange="settingApp('qariSetting', 1, 100, 'Setting')">
                             <label class="form-check-label" for="optQari1">As-Sudais</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="optQari" id="optQari2" value="2" onchange="setttingApp('qariSetting', 2, 100, 'Setting')">
+                            <input class="form-check-input" type="radio" name="optQari" id="optQari2" value="2" onchange="settingApp('qariSetting', 2, 100, 'Setting')">
                             <label class="form-check-label" for="optQari2">Al-Mathrud</label>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (headers[i].Contains("Tafsir"))
+            {
+                <div class="form-group form-row text-dark collapse multi-collapse@(i)" id="div_@i">
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optTafsir" id="optTafsir0" value="0" onchange="settingApp('tafsirSetting', 0, 100, 'Setting')">
+                            <label class="form-check-label" for="optTafsir0">Kementrian Agama</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="optTafsir" id="optTafsir1" value="1" onchange="settingApp('tafsirSetting', 1, 100, 'Setting')">
+                            <label class="form-check-label" for="optTafsir1">Al-Jalalain</label>
                         </div>
                     </div>
                 </div>
             }
         }
     }
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         var isExistSetting = getCookie('transliterasiSetting');
@@ -118,6 +152,22 @@
         }
         else {
             $("#optQari" + isExistSetting).prop('checked', true);
+        }
+
+        isExistSetting = getCookie('rasmSetting');
+        if (!isExistSetting || (isExistSetting && isExistSetting == 0)) {
+            $("#optRasm0").prop('checked', true);
+        }
+        else {
+            $("#optRasm" + isExistSetting).prop('checked', true);
+        }
+
+        isExistSetting = getCookie('tafsirSetting');
+        if (!isExistSetting || (isExistSetting && isExistSetting == 0)) {
+            $("#optTafsir0").prop('checked', true);
+        }
+        else {
+            $("#optTafsir" + isExistSetting).prop('checked', true);
         }
     });
 

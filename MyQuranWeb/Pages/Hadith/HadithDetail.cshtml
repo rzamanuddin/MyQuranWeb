@@ -1,0 +1,128 @@
+﻿@page "{Slug?}/{pageNumber:int?}/{hadithNumber:int?}"
+@model MyQuranWeb.Pages.Hadith.HadithDetailModel
+@{
+    ViewData["Title"] = $"Hadis {(Model.HadithResult != null ? Model.HadithResult.Name : "")}";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+else
+{
+    <div id="snackbar"></div>
+    <div class="form-group form-row">
+        <div class="col-12 text-right">
+            <partial name="_Navigation" model="Model.Navigation" />
+        </div>
+    </div>
+    <div class="form-group form-row">
+        <label class="col-lg-8 col-md-5 col-sm-3 col-2 text-right font-weight-bold" for="@Model.PageNumber">Pilih :</label>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-4">
+            <select asp-for="@Model.Slug" asp-items="Model.NarratorList" class="form-control form-control-sm searchList" id="searchSlug" data-toggle="tooltip" title="Perawi Hadis">
+            </select>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-1 col-3">
+            <select asp-for="@Model.PageNumber" asp-items="Model.PageList" class="form-control form-control-sm searchList" id="searchPageNumber" data-toggle="tooltip" title="Halaman Hadis">
+            </select>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-1 col-3">
+            <select asp-for="@Model.HadithNumber" asp-items="Model.HadithList" class="form-control form-control-sm searchList" id="searchHadithNumber" data-toggle="tooltip" title="Nomor Hadis">
+            </select>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@(Model.HadithResult != null ? Model.HadithResult.DisplaySubTitle : "")</p>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.HadithResult.Items.Count; i++)
+            {
+                var alternateColor = "";
+                var bookmarks = "fa-bookmark-o";
+                var cookieName = $"book_hadith_perawi_{Model.Slug}_{Model.PageNumber}_{Model.HadithResult.Items[i].Number}";
+                var cookieValue = Model.HadithResult.Items[i].Number.ToString();
+                if (!string.IsNullOrEmpty(Request.Cookies[cookieName]))
+                {
+                    bookmarks = "fa-bookmark";
+                }
+               
+                @if (@Model.HadithResult.Items[i].Number % 2 == 1) { alternateColor = "alert-secondary"; }
+                <div class="form-group form-row @alternateColor text-dark" id="div_@Model.HadithResult.Items[i].Number">
+                    @*<div class="col-sm-2 col-md-2 col-lg-1">*@
+                    <div class="col-2 text-left small">
+                        <p>@Model.HadithResult.Items[i].Number</p>
+                    </div>
+                    <div class="col-10 text-right">
+                        <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Hadis & Terjemah" id="@("btnCopy" + i)" onclick='copyHadith("@i","@Model.HadithResult.Name","@Model.HadithResult.Items[i].Number","@Model.HadithResult.Items[i].Arabic","@Html.Encode(Model.HadithResult.Items[i].Id)")'><i class="fa fa-clone"></i></button>
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + cookieName)" onclick="setCookie('@cookieName','@cookieValue','100')"><i id="bookmark@(cookieName)" class="fa @bookmarks"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p class="h3 arab">@Model.HadithResult.Items[i].Arabic</p>
+                    </div>
+                    <div class="col-12 text-justify">
+                        <p class="translate"><small>@Model.HadithResult.Items[i].Id</small></p>
+                    </div>
+                </div>
+            }
+            @* <partial name="_Navigation" model="@Model.Navigation" /> *@
+        </div>
+    </div>
+}
+
+<style type="text/css">
+    .smartControl {
+        top: 3em;
+        padding-left: 1em;
+        z-index: 1;
+    }
+
+    .control {
+        position: sticky;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+
+        var pageNumber = $("#searchHadithNumber").val();
+        scrollToAyah(pageNumber);
+
+        $("#btnSearch").click(function () {
+            ayahID = $("#searchHadithNumber").val();
+            scrollToAyah(pageNumber);
+        });
+
+        $('#txtSearch').on('keypress', function (e) {
+            if (e.which === 13) {
+                scrollToAyah(pageNumber);
+            }
+        });
+
+        //$('.searchList').on('change', function () {
+        $('#searchSlug').on('change', function () {
+            //ways to retrieve selected option and text outside handler
+            //console.log('Changed option value ' + this.value);
+            //console.log('Changed option text ' + $(this).find('option').filter(':selected').text());
+            var origin = window.location.origin;
+            window.location.replace(websiteUrl + "/Hadith/HadithDetail/" + $(this).val() + "/1");
+            //alert(origin + "Quran/SurahDetail/" + this.value);
+        });
+
+        $('#searchPageNumber').on('change', function () {
+            var origin = window.location.origin;
+            window.location.replace(websiteUrl + "/Hadith/HadithDetail/" + $("#searchSlug").val() + "/" + $(this).val());
+        });
+
+        $('#searchHadithNumber').on('change', function () {
+            var origin = window.location.origin;
+            scrollToAyah($(this).val());
+        });
+    });
+
+</script>

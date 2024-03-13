@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MyQuranWeb.Domain.Interfaces.Hadiths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,10 @@ namespace MyQuranWeb.Domain.Interfaces
         IAyahRepository Ayahs { get; }
         ISurahRepository Surahs { get; }
         ITafsirRepository Tafsirs { get; }
-
+        ITafsirNewRepository TafsirsNew { get; }
+        IHadithRepository Hadiths { get; }
         IJuzDetailRepository JuzDetails { get; }
-
         IJuzHeaderRepository JuzHeaders { get; }
-
         IConfiguration Configuration { get; }
     }
 }

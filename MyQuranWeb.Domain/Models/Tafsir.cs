@@ -12,6 +12,7 @@ namespace MyQuranWeb.Domain.Models
         public int AyahId { get; set; }
         public int SurahId { get; set; }
         public string Kemenag { get; set; }
+        public string AlJalalain { get; set; }
 
         public virtual Surah Surah { get; set; }
         public virtual Ayah Ayah { get; set; }

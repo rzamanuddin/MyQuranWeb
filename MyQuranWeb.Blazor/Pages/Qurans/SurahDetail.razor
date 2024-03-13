@@ -1,0 +1,47 @@
+﻿@page "/Qurans/SurahDetail/{Id:int}";
+@inherits PageBase;
+<PageTitle>@PageTitle</PageTitle>
+
+@if (!String.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div id="error" class="alert alert-danger text-danger">
+        <span>@ErrorMessage</span>
+    </div>
+}
+
+
+<div class="form-group form-row">
+    @*<div class="col-form-label text-right col-lg-9 col-md-7 col-sm-7">
+    </div>*@
+    <label class="col-lg-9 col-md-7 col-sm-7 col-4 text-right font-weight-bold" for="@Id">Pilih :</label>
+    @*<div class="offset-lg-9 offset-md-7 offset-sm-7 offset-7 col-lg-2 col-md-3 col-sm-3 col-3">*@
+    <div class="col-lg-2 col-md-3 col-sm-3 col-5">
+       <select class="form-select form-select-sm" @bind="@Id">
+           @if(SurahList != null)
+            {
+                foreach (var s in SurahList)
+                {
+                    <option value="@s.Id">@s.NameLatin</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-1 col-3">
+        <select class="form-select form-select-sm">
+            @if (AyahList != null)
+            {
+                foreach (var a in AyahList)
+                {
+                    if (a.AyahId == 1)
+                    {
+                        <option value="@a.AyahId" selected="selected">@a.AyahId</option>
+                    }
+                    else
+                    {
+                        <option value="@a.AyahId">@a.AyahId</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+</div>

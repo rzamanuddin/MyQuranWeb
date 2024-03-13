@@ -12,4 +12,10 @@ namespace MyQuranWeb.Domain.Interfaces
         Task<IEnumerable<Tafsir>> GetBySurahID(int surahID);
         Task<Tafsir> GetBySurahAndAyahID(int surahID, int ayahID);
     }
+
+    public interface ITafsirNewRepository
+    {
+        Task<TafsirApiResult> GetBySurahID(int surahID);
+        Task<AyahNew> GetBySurahAndAyahID(int surahID, int ayahID);
+    }
 }

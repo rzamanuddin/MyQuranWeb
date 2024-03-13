@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models;
-using MyQuranWeb.Options;
+using MyQuranWeb.Library.Options;
 
 namespace MyQuranWeb.Pages.Quran
 {
@@ -32,6 +32,10 @@ namespace MyQuranWeb.Pages.Quran
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(Search))
+                {
+                    return;
+                }
                 var filter = new AyahFilter();
                 int searchID = 0;
                 int.TryParse(Search, out searchID);
@@ -60,23 +64,29 @@ namespace MyQuranWeb.Pages.Quran
             }
         }
 
-        public async Task<JsonResult> OnGetTafsirAsync(int id)
-        {
-            try
-            {
-                var tafsir = await unitOfWork.Tafsirs.GetByID(id);
-                if (tafsir != null)
-                {
-                    return new JsonResult(tafsir.Kemenag);
-                }
+        //public async Task<JsonResult> OnGetTafsirAsync(int id)
+        //{
+        //    try
+        //    {
+        //        var tafsir = await unitOfWork.Tafsirs.GetByID(id);
+        //        if (tafsir != null)
+        //        {
+        //            if(!string.IsNullOrWhiteSpace(Request.Cookies["tafsirSetting"])
+        //                && Request.Cookies["tafsirSetting"] == "1")
+        //            {
+        //                return new JsonResult(tafsir.AlJalalain);
+        //            }
 
-                return new JsonResult("");
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-                return new JsonResult("");
-            }
-        }
+        //            return new JsonResult(tafsir.Kemenag);
+        //        }
+
+        //        return new JsonResult("");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ErrorMessage = ex.Message;
+        //        return new JsonResult("");
+        //    }
+        //}
     }
 }

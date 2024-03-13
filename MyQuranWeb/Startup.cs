@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyQuranWeb.Domain.Models;
-using MyQuranWeb.Options;
+using MyQuranWeb.Library.Options;
 using MyQuranWebRepository;
 using System;
 using System.Collections.Generic;

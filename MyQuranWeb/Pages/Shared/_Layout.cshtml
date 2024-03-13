@@ -1,13 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http.Extensions;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Al-Qur'an Bahasa Indonesia</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <link rel="manifest" href="~/site.webmanifest">
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -53,6 +54,12 @@
                             </div>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark d-none" href="~/Quran/SurahDetail" id="linkSurahDetail">Surah Detail</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark d-none" href="~/Quran/JuzDetail" id="linkJuzDetail">JuzDetail</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Quran/Find">Pencarian</a>
                         </li>
                         <li class="nav-item dropdown">
@@ -61,14 +68,27 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownJadwalSholat">
                                 <a class="dropdown-item" asp-page="/PraySchedule/Index">Per Hari</a>
-                                <a class="dropdown-item" href="/PraySchedule/Monthly">Per Bulan</a>
+                                <a class="dropdown-item" asp-page="/PraySchedule/Monthly">Per Bulan</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownHadith" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hadis
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownHadith">
+                                <a class="dropdown-item" asp-page="/Hadith/ListHadithArbain">Hadis Arbain</a>
+                                <a class="dropdown-item" href="~/Hadith/HadithBMDetail/1">Hadis Bulughul Maram</a>
+                                <a class="dropdown-item" asp-page="/Hadith/ListHadith">Hadis 9 Perawi</a>
                             </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="mailto:rzamanuddin@gmail.com">Saran & Kritik</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Setting">Pengaturan</a>
+                            <a class="nav-link text-dark" asp-page="/Setting">Pengaturan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/About">Tentang Kami</a>
                         </li>
                     </ul>
                 </div>
@@ -83,7 +103,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - Al-Qur'an Bahasa Indonesia - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2022 - Al-Qur'an Bahasa Indonesia@*  - <a asp-area="" asp-page="/Privacy">Privacy</a> *@
         </div>
     </footer>
 
@@ -96,7 +116,6 @@
     <script>
         $(function () {
         });
-
 
         function openAyahFromMenu(type) {
             var origin = window.location.origin
@@ -139,10 +158,14 @@
                             text: 'OK',
                             action: function () {
                                 if (type == 0) {
-                                    window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
+                                    //window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
+                                    origin = $("#linkSurahDetail").attr("href");
+                                    window.location.href = origin + "/" + splittedText[0] + "/" + splittedText[2];
                                 }
                                 else {
-                                    window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
+                                    //window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
+                                    origin = $("#linkJuzDetail").attr("href");
+                                    window.location.href = origin + "/" + splittedText[4] + "/" + splittedText[3];
                                 }
                             }
                         },
@@ -163,15 +186,7 @@
                     autoClose: 'ok|3000',
                     buttons: {
                         ok: {
-                            text: 'OK',
-                            action: function () {
-                                if (type == 0) {
-                                    window.location.href = origin + "/Quran/SurahDetail/" + splittedText[0] + "/" + splittedText[2];
-                                }
-                                else {
-                                    window.location.href = origin + "/Quran/JuzDetail/" + splittedText[4] + "/" + splittedText[3];
-                                }
-                            }
+                            text: 'OK'
                         }
                     }
                 });

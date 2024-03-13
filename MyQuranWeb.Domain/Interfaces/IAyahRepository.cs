@@ -17,5 +17,6 @@ namespace MyQuranWeb.Domain.Interfaces
     {
         Task<IEnumerable<Ayah>> GetBySurahID(int surahID);
         Task<Ayah> GetBySurahAndAyahID(int surahID, int ayahID);
+        Task<Ayah> GetByIDForPopUp(int id);
     }
 }

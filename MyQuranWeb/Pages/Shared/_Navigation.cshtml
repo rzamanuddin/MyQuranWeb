@@ -15,15 +15,55 @@
             {
                 page = "TafsirDetail";
             }
-            if (Model.ID.HasValue && Model.ID.Value > 1)
+            else if (Model.Type == 3)
             {
-                <a class="btn btn-outline-dark" href="/Quran/@(page)/1"><i class="fa fa-angle-double-left fa-2x"></i></a>
-                <a class="btn btn-outline-dark" href="/Quran/@(page)/@(Model.ID.Value - 1)"><i class="fa fa-angle-left fa-2x"></i></a>
+                page = "HadithDetail";
+                lastPage = Model.LastPage;
             }
-            if (Model.ID.HasValue && Model.ID.Value < lastPage)
+            else if (Model.Type == 4)
             {
-                <a class="btn btn-outline-dark" href="/Quran/@(page)/@(Model.ID.Value + 1)"><i class="fa fa-angle-right fa-2x"></i></a>
-                <a class="btn btn-outline-dark" href="/Quran/@(page)/@(lastPage)"><i class="fa fa-angle-double-right fa-2x"></i></a>
+                page = "HadithBMDetail";
+                lastPage = Model.LastPage;
+            }
+            if (Model.Type <= 2)
+            {
+                if (Model.ID.HasValue && Model.ID.Value > 1)
+                {
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/1"><i class="fa fa-angle-double-left fa-2x" data-toggle="tooltip" title="Halaman Pertama"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/@(Model.ID.Value - 1)" data-toggle="tooltip" title="Halaman Sebelumnya"><i class="fa fa-angle-left fa-2x"></i></a>
+                }
+                if (Model.ID.HasValue && Model.ID.Value < lastPage)
+                {
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/@(Model.ID.Value + 1)" data-toggle="tooltip" title="Halaman Berikutnya"><i class="fa fa-angle-right fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/@(lastPage)" data-toggle="tooltip" title="Halaman Terakhir"><i class="fa fa-angle-double-right fa-2x"></i></a>
+                }
+            }
+            else if(Model.Type == 3)
+            {
+                if (Model.ID.HasValue && Model.ID.Value > 1)
+                {
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@Model.Slug/1" data-toggle="tooltip" title="Halaman Pertama"><i class="fa fa-angle-double-left fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@Model.Slug/@(Model.ID.Value - 1)" data-toggle="tooltip" title="Halaman Sebelumnya"><i class="fa fa-angle-left fa-2x"></i></a>
+                }
+                if (Model.ID.HasValue && Model.ID.Value < lastPage)
+                {
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@Model.Slug/@(Model.ID.Value + 1)" data-toggle="tooltip" title="Halaman Berikutnya"><i class="fa fa-angle-right fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@Model.Slug/@(lastPage)" data-toggle="tooltip" title="Halaman Terakhir"><i class="fa fa-angle-double-right fa-2x"></i></a>
+                }
+            }
+            else 
+            {
+
+                if (Model.ID.HasValue && Model.ID.Value > 1)
+                {
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/1" data-toggle="tooltip" title="Halaman Pertama"><i class="fa fa-angle-double-left fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@(Model.ID.Value - 1)" data-toggle="tooltip" title="Halaman Sebelumnya"><i class="fa fa-angle-left fa-2x"></i></a>
+                }
+                if (Model.ID.HasValue && Model.ID.Value < lastPage)
+                {
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@(Model.ID.Value + 1)" data-toggle="tooltip" title="Halaman Berikutnya"><i class="fa fa-angle-right fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@(lastPage)" data-toggle="tooltip" title="Halaman Terakhir"><i class="fa fa-angle-double-right fa-2x"></i></a>
+                }
             }
         }
     </div>

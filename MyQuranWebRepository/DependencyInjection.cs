@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyQuranWeb.Domain.Interfaces;
+using MyQuranWeb.Domain.Interfaces.Hadiths;
 using MyQuranWeb.Domain.Models;
+using MyQuranWebRepository.Hadiths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +29,17 @@ namespace MyQuranWebRepository
             services.AddScoped<IAyahRepository, AyahRepository>();
             services.AddScoped<ISurahRepository, SurahRepository>();
             services.AddScoped<ITafsirRepository, TafsirRepository>();
+            services.AddScoped<ITafsirNewRepository, TafsirNewRepository>();
             services.AddScoped<IJuzHeaderRepository, JuzHeaderRepository>();
             services.AddScoped<IJuzDetailRepository, JuzDetailRepository>();
+            services.AddScoped<IHadithRepository, HadithRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services.AddOptions<AppSettingModel>();
 
             services.AddDbContext<MyQuranContext>(opt =>
                 //opt.UseLazyLoadingProxies()
-                opt.UseSqlServer(configuration.GetConnectionString("MyQuranContext"))                
+                opt.UseSqlServer(configuration.GetConnectionString("MyQuranContext"),
+                sqlServerOptions => sqlServerOptions.CommandTimeout(Convert.ToInt32(configuration.GetSection("AppSetting:CommandTimeout").Value)))                
                 );
 
             //services.Configure<AppSettingModel>(configuration.GetSection("AppSettingModel"));

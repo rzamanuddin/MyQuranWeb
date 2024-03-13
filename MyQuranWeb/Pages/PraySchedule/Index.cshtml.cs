@@ -10,7 +10,7 @@ using MyQuranWeb.Domain.Models.PrayerSchedules;
 using Newtonsoft.Json;
 using MyQuranWeb.Domain.Interfaces;
 using Microsoft.Extensions.Options;
-using MyQuranWeb.Options;
+using MyQuranWeb.Library.Options;
 
 namespace MyQuranWeb.Pages.PraySchedule
 {

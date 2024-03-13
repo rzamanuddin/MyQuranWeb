@@ -8,12 +8,22 @@
                 </button>
             </div>
             <div class="modal-body">
+                @{
+                    string fontArab = "arab";
+                    string bismillah = "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ";
+                    if (!string.IsNullOrWhiteSpace(Context.Request.Cookies["rasmSetting"])
+                        && Context.Request.Cookies["rasmSetting"] == "1")
+                    {
+                        fontArab = "arabUthmani";
+                        bismillah = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ";
+                    }
+                }
                 <form>
                     <input type="hidden" id="ayahID" />
                     <input type="hidden" id="surahID" />
                     <div class="form-group">
                         <div class="col-12 text-right">
-                            <p id="ayahReadText" class="h2 arab"></p>
+                            <p id="ayahReadText" class="h2 @fontArab"></p>
                         </div>
                         <div class="col-12 text-justify">
                             <p id="ayahReadIndo"></p>

@@ -1,0 +1,34 @@
+﻿@page
+@model MyQuranWeb.Pages.Hadith.ListHadithArbainModel
+@{
+    ViewData["Title"] = "Daftar Hadis Arbain";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger text-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header text-center">
+        <p class="h2">@ViewData["Title"]</p>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <table class="table table-sm table-striped table-hover table-borderless">
+                @for (int i = 0; i < Model.Hadiths.Data.Count; i++)
+                {
+                    <tr>
+                        @{
+                            var hadith = Model.Hadiths.Data[i];
+                            <td><a href="~/Hadith/HadithArbainDetail/@Model.Hadiths.Data[i].No" target="_blank" class="text-decoration-none text-dark">@($"{hadith.No}. {hadith.Judul}")</a></td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

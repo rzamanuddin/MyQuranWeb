@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
-using MyQuranWeb.Options;
+using MyQuranWeb.Library.Options;
 
 namespace MyQuranWeb.Pages
 {

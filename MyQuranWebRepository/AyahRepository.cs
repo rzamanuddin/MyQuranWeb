@@ -38,7 +38,12 @@ namespace MyQuranWebRepository
 
         public async Task<Ayah> GetByID(int id)
         {
-            return await _context.Ayahs.Include(q => q.Tafsir).FirstOrDefaultAsync(q => q.Id == id);
+            return await _context.Ayahs.Include(q => q.Tafsir).Include(q => q.Surah).Include(q => q.JuzDetail).FirstOrDefaultAsync(q => q.Id == id);
+        }
+
+        public async Task<Ayah> GetByIDForPopUp(int id)
+        {
+            return await _context.Ayahs.FirstOrDefaultAsync(q => q.Id == id);
         }
 
         public async Task<Ayah> GetBySurahAndAyahID(int surahID, int ayahID)

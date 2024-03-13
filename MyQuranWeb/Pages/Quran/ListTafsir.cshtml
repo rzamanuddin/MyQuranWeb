@@ -1,7 +1,7 @@
 ﻿@page
 @model MyQuranWeb.Pages.Quran.ListTafsirModel
 @{
-    ViewData["Title"] = $"Daftar Tafsir Kemenag";
+    ViewData["Title"] = $"Daftar Tafsir";
 }
 
 <div class="card">
@@ -29,7 +29,7 @@
                             @for (int c = 0; c < 3; c++)
                             {
                                 var s = Model.Surahs[i + c];
-                                <td><a href="~/Quran/TafsirDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.HeaderOnly</a></td>
+                                <td><a href="~/Quran/TafsirDetailNew/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.HeaderOnly</a></td>
                             }
                         </tr>
                         i += 2;
@@ -39,7 +39,7 @@
                         <tr>
                             @{
                                 var s = Model.Surahs[i];
-                                <td><a href="~/Quran/TafsirDetail/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.Header</a></td>
+                                <td><a href="~/Quran/TafsirDetailNew/@s.Id" target="_blank" class="text-decoration-none text-dark">@s.Header</a></td>
                             }
                         </tr>
                     }
