@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
-using MyQuranWeb.Domain.Interfaces;
+using MyQuranWebRepository.Interfaces;
 using MyQuranWeb.Domain.Models;
 using MyQuranWeb.Library.Options;
 

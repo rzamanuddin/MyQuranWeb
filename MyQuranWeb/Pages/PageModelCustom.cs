@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Library.Options;
+using MyQuranWebRepository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

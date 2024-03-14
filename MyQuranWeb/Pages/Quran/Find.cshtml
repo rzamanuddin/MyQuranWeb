@@ -112,7 +112,7 @@
                     <p>@Model.Ayahs[i].AyahId</p>
                 </div>
                 <div class="col-10 text-right">
-                    <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                    <div class="btn-group btn-group-sm mp3Player" role="group">
                         <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Play/Pause" onclick="playAudio('@(i+1)')"><i id="playBtn@(i+1)" class="fa fa-play"></i></button>
                         @*<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Mute / Unmute" onclick="document.getElementById('@playerID').muted=!document.getElementById('@playerID').muted"><i id="volumeBtn(@i+1)" class="fa fa-volume-up"></i></button>*@
                         <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Ayat & Terjemah" id="@("btnCopy" + i)" onclick='copyToClipboard("@(Model.Ayahs[i].AyahId-1)","@(Model.Ayahs[i].AyahId)","@Model.Ayahs[i].SurahId","@Model.Ayahs[i].ReadText","@Model.Ayahs[i].ReadIndo","@Model.Ayahs[i].TranslateIndo")'><i class="fa fa-clone"></i></button>

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MyQuranWeb.Domain.Interfaces.Hadiths;
+using MyQuranWebRepository.Interfaces.Hadiths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyQuranWeb.Domain.Interfaces
+namespace MyQuranWebRepository.Interfaces
 {
     public interface IUnitOfWork
     {
@@ -18,5 +18,6 @@ namespace MyQuranWeb.Domain.Interfaces
         IJuzDetailRepository JuzDetails { get; }
         IJuzHeaderRepository JuzHeaders { get; }
         IConfiguration Configuration { get; }
+        IAsmaulHusnaRepository AsmaulHusnas { get; }
     }
 }

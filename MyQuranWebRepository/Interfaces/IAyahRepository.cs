@@ -1,11 +1,12 @@
 ﻿using MyQuranWeb.Domain.Models;
+using MyQuranWebRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyQuranWeb.Domain.Interfaces
+namespace MyQuranWebRepository.Interfaces
 {
     //public interface ICompanyRegistrationRepository : IGenericRepository<Models.Altus.Finance.CompanyRegistrations.CompanyRegistration>,
     //    IGetRepository<Models.Altus.Finance.CompanyRegistrations.CompanyRegistration, CompanyRegistrationFilter>

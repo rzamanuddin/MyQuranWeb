@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyQuranWeb.Domain.Interfaces
+namespace MyQuranWebRepository.Interfaces
 {
     public interface ITafsirRepository : IGetRepository<Tafsir, TafsirFilter>
     {

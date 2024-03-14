@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MyQuranWeb.Domain.Models;
-using MyQuranWeb.Domain.Interfaces;
+using MyQuranWebRepository.Interfaces;
 using System.Text.RegularExpressions;
 using Microsoft.JSInterop;
+using MyQuranWebRepository.Interfaces;
 
 namespace MyQuranWeb.Blazor.Pages
 {

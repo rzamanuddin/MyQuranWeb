@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyQuranWeb.Domain.Interfaces;
+using MyQuranWebRepository.Interfaces;
 using MyQuranWeb.Domain.Models;
 
 namespace MyQuranWeb.Pages.Quran

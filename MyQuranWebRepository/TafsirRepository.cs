@@ -1,9 +1,9 @@
 ﻿using Castle.Core.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models;
 using MyQuranWeb.Library.Options;
+using MyQuranWebRepository.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyQuranWebRepository", "MyQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyQuranWeb.Blazor", "MyQuranWeb.Blazor\MyQuranWeb.Blazor.csproj", "{87104E5D-0A72-4842-8181-947A29C7E967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuranWeb.Library", "MyQuranWeb.Library\MyQuranWeb.Library.csproj", "{BDC4124B-A27B-452E-B39C-C4DEAB42392A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyQuranWeb.Library", "MyQuranWeb.Library\MyQuranWeb.Library.csproj", "{BDC4124B-A27B-452E-B39C-C4DEAB42392A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,12 +1,11 @@
-﻿using MyQuranWeb.Domain.Models;
-using MyQuranWeb.Domain.Models.Hadiths;
+﻿using MyQuranWeb.Domain.Models.Hadiths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyQuranWeb.Domain.Interfaces.Hadiths
+namespace MyQuranWebRepository.Interfaces.Hadiths
 {
     public interface IHadithRepository
     {

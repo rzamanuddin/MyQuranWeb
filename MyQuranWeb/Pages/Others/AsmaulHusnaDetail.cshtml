@@ -1,0 +1,98 @@
+﻿@page "{number:int?}"
+@model AsmaulHusnaDetailModel
+@{
+    ViewData["Title"] = "Daftar Asmaul Husna";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+else
+{
+    <div id="snackbar"></div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@ViewData["Title"]</p>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.AsmaulHusnaResult.Data.Count; i++)
+            {
+                var alternateColor = "";
+                @if (@Model.AsmaulHusnaResult.Data[i].Id % 2 == 1) { alternateColor = "alert-secondary"; }
+                <div class="form-group form-row @alternateColor text-dark" id="div_@Model.AsmaulHusnaResult.Data[i].Id">
+                    <div class="col-8 text-left">
+                        <p class="font-weight-bold">@($"{Model.AsmaulHusnaResult.Data[i].Id}. {Model.AsmaulHusnaResult.Data[i].Latin}")</p>
+                    </div>
+                    <div class="col-4 text-right align-top">
+                        <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Hadis & Terjemah" id="@("btnCopy" + i)" onclick='copyAsmaulHusna("@i","@Model.AsmaulHusnaResult.Data[i].Latin","@Model.AsmaulHusnaResult.Data[i].Id","@Model.AsmaulHusnaResult.Data[i].Arab","@Html.Encode(Model.AsmaulHusnaResult.Data[i].Indo)")'><i class="fa fa-clone"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p class="h3 arab">@Model.AsmaulHusnaResult.Data[i].Arab</p>
+                    </div>
+                    <div class="col-12 text-justify">
+                        <p class="translate"><small>@Model.AsmaulHusnaResult.Data[i].Indo</small></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<style type="text/css">
+    .smartControl {
+        top: 3em;
+        padding-left: 1em;
+        z-index: 1;
+    }
+
+    .control {
+        position: sticky;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+
+        var pageNumber = $("#searchHadithNumber").val();
+        scrollToAyah(pageNumber);
+
+        $("#btnSearch").click(function () {
+            ayahID = $("#searchHadithNumber").val();
+            scrollToAyah(pageNumber);
+        });
+
+        $('#txtSearch').on('keypress', function (e) {
+            if (e.which === 13) {
+                scrollToAyah(pageNumber);
+            }
+        });
+
+        //$('.searchList').on('change', function () {
+        $('#searchSlug').on('change', function () {
+            //ways to retrieve selected option and text outside handler
+            //console.log('Changed option value ' + this.value);
+            //console.log('Changed option text ' + $(this).find('option').filter(':selected').text());
+            var origin = window.location.origin;
+            window.location.replace(websiteUrl + "/Hadith/HadithDetail/" + $(this).val() + "/1");
+            //alert(origin + "Quran/SurahDetail/" + this.value);
+        });
+
+        $('#searchPageNumber').on('change', function () {
+            var origin = window.location.origin;
+            window.location.replace(websiteUrl + "/Hadith/HadithDetail/" + $("#searchSlug").val() + "/" + $(this).val());
+        });
+
+        $('#searchHadithNumber').on('change', function () {
+            var origin = window.location.origin;
+            scrollToAyah($(this).val());
+        });
+    });
+
+</script>
+

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyQuranWeb.Domain.Models
+namespace MyQuranWeb.Domain.Models.Hadiths
 {
     public class HadithBM
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models;
+using MyQuranWebRepository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

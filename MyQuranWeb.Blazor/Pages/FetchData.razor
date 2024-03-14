@@ -43,7 +43,7 @@ else
     private IEnumerable<Surah> Surahs = Enumerable.Empty<Surah>();
 
     [Inject]
-    public MyQuranWeb.Domain.Interfaces.ISurahRepository SurahRepository {get; init;}
+    public MyQuranWebRepository.Interfaces.ISurahRepository SurahRepository {get; init;}
 
     protected override async Task OnInitializedAsync()
     {

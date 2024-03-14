@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MyQuranWeb.Domain.Interfaces;
-using MyQuranWeb.Domain.Interfaces.Hadiths;
+using MyQuranWebRepository.Interfaces;
+using MyQuranWebRepository.Interfaces.Hadiths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,7 @@ namespace MyQuranWeb.Domain.Models
         public IJuzDetailRepository JuzDetails { get; }
         public IJuzHeaderRepository JuzHeaders { get; }
         public IHadithRepository Hadiths { get; }
+        public IAsmaulHusnaRepository AsmaulHusnas { get; }
 
         public IConfiguration Configuration { get; }
         public UnitOfWork(MyQuranContext myQuranContext,
@@ -29,6 +30,7 @@ namespace MyQuranWeb.Domain.Models
             IJuzDetailRepository juzRepository,
             IJuzHeaderRepository juzHeaderRepository,
             IHadithRepository hadithsRepository,
+            IAsmaulHusnaRepository asmaulHusnasRepository,
             IConfiguration configuration)
         {
             this._context = myQuranContext;
@@ -39,6 +41,7 @@ namespace MyQuranWeb.Domain.Models
             this.JuzDetails = juzRepository;
             this.JuzHeaders = juzHeaderRepository;
             this.Hadiths = hadithsRepository;
+            this.AsmaulHusnas = asmaulHusnasRepository;
             this.Configuration = configuration;
         }
 

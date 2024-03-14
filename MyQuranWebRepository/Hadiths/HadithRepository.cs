@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using MyQuranWeb.Domain.Interfaces.Hadiths;
 using MyQuranWeb.Domain.Models;
 using MyQuranWeb.Domain.Models.Hadiths;
 using MyQuranWeb.Library.Options;
+using MyQuranWebRepository.Interfaces.Hadiths;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

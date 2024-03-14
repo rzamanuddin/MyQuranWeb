@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using MyQuranWeb.Blazor.Data;
-using MyQuranWeb.Domain.Interfaces;
+using MyQuranWebRepository.Interfaces;
 using MyQuranWeb.Domain.Models;
 using MyQuranWeb.Library.Options;
 using MyQuranWebRepository;

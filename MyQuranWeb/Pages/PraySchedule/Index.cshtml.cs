@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyQuranWeb.Domain.Models.PrayerSchedules;
 using Newtonsoft.Json;
-using MyQuranWeb.Domain.Interfaces;
+using MyQuranWebRepository.Interfaces;
 using Microsoft.Extensions.Options;
 using MyQuranWeb.Library.Options;
 

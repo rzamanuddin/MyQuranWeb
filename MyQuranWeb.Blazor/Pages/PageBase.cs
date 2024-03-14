@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MyQuranWeb.Domain.Interfaces;
+using MyQuranWebRepository.Interfaces;
 
 namespace MyQuranWeb.Blazor.Pages
 {

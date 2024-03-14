@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyQuranWeb.Domain.Interfaces;
-using MyQuranWeb.Domain.Interfaces.Hadiths;
 using MyQuranWeb.Domain.Models;
 using MyQuranWebRepository.Hadiths;
+using MyQuranWebRepository.Interfaces;
+using MyQuranWebRepository.Interfaces.Hadiths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +33,7 @@ namespace MyQuranWebRepository
             services.AddScoped<IJuzHeaderRepository, JuzHeaderRepository>();
             services.AddScoped<IJuzDetailRepository, JuzDetailRepository>();
             services.AddScoped<IHadithRepository, HadithRepository>();
+            services.AddScoped<IAsmaulHusnaRepository, AsmaulHusnaRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services.AddOptions<AppSettingModel>();
 

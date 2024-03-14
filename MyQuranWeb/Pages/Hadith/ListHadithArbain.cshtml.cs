@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
-using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models.Hadiths;
 using MyQuranWeb.Library.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using MyQuranWebRepository.Interfaces;
 
 namespace MyQuranWeb.Pages.Hadith
 {

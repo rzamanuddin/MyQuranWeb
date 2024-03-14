@@ -145,6 +145,35 @@ function copyHadithBM(index, hadithNo, arabText, translateId) {
         }
     });
 }
+function copyAsmaulHusna(index, judul, no, arabText, translateIndo) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateIndo;
+
+    var copiedText = "Asmaul Husna No. " + no + " " + judul + "\n\n" + arabText + "\n\n" + txt.value + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: 'Salin Asmaul Husna',
+        content: "Asmaul Husna No. " + no + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
 
 //function copyAyah(ayahID, surahID, ayah, textIndo, translateIndo) {
 //    var copiedText = "Q.S. " + surahID + ":" + ayahID + "\n" + ayah + "\n" + textIndo + "\n" + translateIndo;

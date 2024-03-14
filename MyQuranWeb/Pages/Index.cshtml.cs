@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MyQuranWeb.Domain.Interfaces;
 using MyQuranWeb.Domain.Models;
 using MyQuranWebRepository;
 using System;
@@ -13,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using MyQuranWeb.Library.Options;
+using MyQuranWebRepository.Interfaces;
 
 namespace MyQuranWeb.Pages
 {
