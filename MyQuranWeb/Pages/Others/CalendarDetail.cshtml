@@ -1,0 +1,71 @@
+﻿@page
+@model MyQuranWeb.Pages.Others.CalendarDetailModel
+@{
+	ViewData["Title"] = "Kalender Masehi & Hijriah";
+}
+<link rel="stylesheet" href="https://ZulNs.github.io/libs/calendar.css" />
+<script type="text/javascript" src="https://ZulNs.github.io/libs/hijri-date.js"></script>
+<script type="text/javascript" src="https://ZulNs.github.io/libs/calendar.js"></script>
+<div class="card">
+	<div class="card-header text-center">
+		<p class="h2">Kalender Masehi & Hijriah</p>
+	</div>
+	<div class="card-body">
+		<div class="form-group form-row text-center">
+			<div class="col">
+				<div id="calendar-converter1"></div>
+			</div>
+			<div class="col">
+				<div id="calendar-converter2"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var cal1 = new Calendar(false, 1, false, true),
+		cal2 = new Calendar(true, 0, false, true),
+		cal1Mode = cal1.isHijriMode(),
+		cal2Mode = cal2.isHijriMode();
+	document.getElementById('calendar-converter1').appendChild(cal1.getElement());
+	document.getElementById('calendar-converter2').appendChild(cal2.getElement());
+	cal1.setDisplayStyle('inline-block');
+	cal2.setDisplayStyle('inline-block');
+	cal1.getElement().style.marginTop = '20px';
+	cal2.getElement().style.marginTop = '20px';
+	cal1.getElement().style.marginBottom = '20px';
+	cal2.getElement().style.marginBottom = '20px';
+	cal1.show();
+	cal2.show();
+
+	cal1.callback = function () {
+		if (cal1Mode !== cal1.isHijriMode()) {
+			cal2.disableCallback(true);
+			cal2.changeDateMode();
+			cal2.disableCallback(false);
+			cal1Mode = cal1.isHijriMode();
+			cal2Mode = cal2.isHijriMode();
+		} // prevent from infinite loop when user change the calendar mode
+		else
+			cal2.setTime(cal1.getTime());
+	};
+
+	cal2.callback = function () {
+		if (cal2Mode !== cal2.isHijriMode()) {
+			cal1.disableCallback(true);
+			cal1.changeDateMode();
+			cal1.disableCallback(false);
+			cal1Mode = cal1.isHijriMode();
+			cal2Mode = cal2.isHijriMode();
+		} // prevent from infinite loop when user change the calendar mode
+		else
+			cal1.setTime(cal2.getTime());
+	};
+
+	cal1.onHide = function () {
+		cal1.show(); // prevent the widget from being closed
+	};
+
+	cal2.onHide = function () {
+		cal2.show(); // prevent the widget from being closed
+	};
+</script>

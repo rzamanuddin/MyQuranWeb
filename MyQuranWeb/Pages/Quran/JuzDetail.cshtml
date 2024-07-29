@@ -151,7 +151,7 @@ else
                             <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir" data-target="#tafsirModal" data-id="@Model.JuzDetails[i].Id" data-surahid="@Model.JuzDetails[i].SurahId" data-ayahid="@Model.JuzDetails[i].AyahId" data-title="@($"Tafsir {tafsir} Q.S. {Model.JuzDetails[i].Ayah.Surah.Id}:{Model.JuzDetails[i].Ayah.AyahId}")"><i class="fa fa-book"></i></button>
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + Model.JuzDetails[i].Id)" onclick="setCookie('@Model.JuzDetails[i].Ayah.Id','@Model.JuzDetails[i].Ayah.Id','100')"><i id="bookmark@(Model.JuzDetails[i].Ayah.Id)" class="fa @bookmarks"></i></button>
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Tandai Terakhir Dibaca" id="@("btnLastAyah" + Model.JuzDetails[i].Id)" onclick='setLastAyah("100","@Model.JuzDetails[i].SurahId","@Model.JuzDetails[i].Ayah.Surah.NameLatin","@Model.JuzDetails[i].Ayah.AyahId","@Model.JuzDetails[i].Id","@Model.JuzDetails[i].JuzId")'><i id="lastAyah@(Model.JuzDetails[i].Id)" class="fa fa-sticky-note"></i></button>
-
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.JuzDetails[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
                             <audio id="@playerID" onpause="pauseAudio('@(i+1)')">
                                 <source src="@($"{Model.AppSettingOption.MP3UrlSetting}{Model.JuzDetails[i].Ayah.SurahId:000}{Model.JuzDetails[i].Ayah.AyahId:000}.mp3")" type="audio/mp3" />
                             </audio>

@@ -16,6 +16,7 @@ namespace MyQuranWeb.Library.Options
         public string BaseUrl { get; set; }
         public string TafsirUrl { get; set; }
         public string HadithUrl { get; set; }
+        public string AsmaulHusnaUrl { get; set; }
         public int LimitPage { get; set; }
         public string WebSiteName { get; set; }
     }

@@ -53,6 +53,7 @@ else
                         <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Hadis & Terjemah" id="@("btnCopy" + i)" onclick='copyHadithBM("@i","@Model.HadithBMs[i].No","@Model.HadithBMs[i].Arab", "@Html.Encode(Model.HadithBMs[i].Id)")'><i class="fa fa-clone"></i></button>
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + cookieName)" onclick="setCookie('@cookieName','@cookieValue','100')"><i id="bookmark@(cookieName)" class="fa @bookmarks"></i></button>
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.HadithBMs[i].No)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
                         </div>
                     </div>
                     <div class="col-12 text-right">
@@ -63,6 +64,7 @@ else
                     </div>
                 </div>
             }
+            <partial name="_Navigation" model="@Model.Navigation" />
         </div>
     </div>
 }

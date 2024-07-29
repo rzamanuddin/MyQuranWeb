@@ -27,15 +27,16 @@ namespace MyQuranWebRepository
         {
             _appSettingOption = appSettingOption.Value;
         }
-        public async Task<AsmaulHusnaAPIResult> Get()
+        public async Task<IEnumerable<AsmaulHusna>> Get()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_appSettingOption.BaseUrl}/husna/all");
+            //var request = new HttpRequestMessage(HttpMethod.Get, $"{_appSettingOption.BaseUrl}/husna/all");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_appSettingOption.AsmaulHusnaUrl}");
             using (var response = await _client.SendAsync(request))
             {
                 response.EnsureSuccessStatusCode();
 
                 var apiResponse = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<AsmaulHusnaAPIResult>(apiResponse);
+                var result = JsonConvert.DeserializeObject<IEnumerable<AsmaulHusna>>(apiResponse);
                 return result;
             }
         }

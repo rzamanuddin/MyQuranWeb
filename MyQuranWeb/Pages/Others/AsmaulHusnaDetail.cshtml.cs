@@ -8,6 +8,8 @@ using MyQuranWebRepository.Interfaces;
 using System.Threading.Tasks;
 using System;
 using MyQuranWeb.Domain.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MyQuranWeb.Pages.Others
 {
@@ -16,7 +18,7 @@ namespace MyQuranWeb.Pages.Others
         [BindProperty(SupportsGet = true)]
         public int? Number { get; set; } = null;
 
-        public AsmaulHusnaAPIResult AsmaulHusnaResult { get; set; }
+        public List<AsmaulHusna> AsmaulHusnas { get; set; }
 
         public AsmaulHusnaDetailModel(IUnitOfWork unitOfWork, IOptions<AppSettingOption> appSettingOption)
         {
@@ -28,8 +30,8 @@ namespace MyQuranWeb.Pages.Others
         {
             try
             {
-                AsmaulHusnaResult = await unitOfWork.AsmaulHusnas.Get();
-                if (AsmaulHusnaResult == null)
+                AsmaulHusnas = (await unitOfWork.AsmaulHusnas.Get()).ToList();
+                if (AsmaulHusnas == null)
                 {
                     throw new Exception("Asmaul husna tidak ditemukan.");
                 }

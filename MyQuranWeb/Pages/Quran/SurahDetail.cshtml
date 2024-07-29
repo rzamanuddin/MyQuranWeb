@@ -102,12 +102,11 @@ else
                 {
                     tafsir = "Al-Jalalain";
                 }
-
                 if (Model.Surah != null && Model.ID.HasValue && Model.ID.Value != 1 && Model.ID.Value != 9)
                 {
                     <div class="form-group">
                         <div class="col-12">
-                            <p class="text-center h2 @fontArab">@bismillah</p>
+                            <p class="text-center @Model.FontSizeSetting @fontArab">@bismillah</p>
                         </div>
                         <div class="col-12 text-left">
                             <p class="text-center">bismillāhir-raḥmānir-raḥīm</p>
@@ -144,6 +143,7 @@ else
                             <button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir @tafsir" data-target="#tafsirModal" data-id="@Model.Ayahs[i].Id" data-surahid="@Model.Ayahs[i].SurahId" data-ayahid="@Model.Ayahs[i].AyahId" data-title="@($"Tafsir {@tafsir} Q.S. {Model.Surah.Id}:{i + 1}")"><i class="fa fa-book"></i></button>
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + Model.Ayahs[i].Id)" onclick="setCookie('@Model.Ayahs[i].Id','@Model.Ayahs[i].Id','100')"><i id="bookmark@(Model.Ayahs[i].Id)" class="fa @bookmarks"></i></button>
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Tandai Terakhir Dibaca" id="@("btnLastAyah" + Model.Ayahs[i].Id)" onclick='setLastAyah("100","@Model.ID","@Model.Surah.NameLatin","@Model.Ayahs[i].AyahId","@Model.Ayahs[i].Id","@Model.Ayahs[i].JuzDetail.JuzId")'><i id="lastAyah@(Model.Ayahs[i].Id)" class="fa fa-sticky-note"></i></button>
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.Ayahs[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
 
                             <audio id="@playerID" onpause="pauseAudio('@(i+1)')">
                                 <source src="@($"{Model.AppSettingOption.MP3UrlSetting}{Model.ID:000}{Model.Ayahs[i].AyahId:000}.mp3")" type="audio/mp3" />
@@ -154,7 +154,7 @@ else
                     </div>
                     @*<div class="col-sm-10 col-md-10 col-lg-11 text-right">*@
                     <div class="col-12 text-right">
-                        <p class="h2 @fontArab">@(fontArab == "arab" ? Model.Ayahs[i].ReadText : Model.Ayahs[i].ReadTextUthmani)</p>
+                        <p class="@Model.FontSizeSetting @fontArab">@(fontArab == "arab" ? Model.Ayahs[i].ReadText : Model.Ayahs[i].ReadTextUthmani)</p>
                     </div>
                     <div class="col-12 text-justify @hideTransliterasi">
                         <p>@Model.Ayahs[i].ReadIndo</p>

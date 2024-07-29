@@ -9,6 +9,6 @@ namespace MyQuranWebRepository.Interfaces
 {
     public interface IAsmaulHusnaRepository
     {
-        Task<AsmaulHusnaAPIResult> Get();
+        Task<IEnumerable<AsmaulHusna>> Get();
     }
 }

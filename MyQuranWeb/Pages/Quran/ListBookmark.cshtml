@@ -3,6 +3,15 @@
 @{
     ViewData["Title"] = "Daftar Bookmark Ayat";
 }
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+    return;
+}
+
 <script src="~/js/ayah.js"></script>
 <div class="card">
     <div class="card-header text-center">
@@ -45,6 +54,22 @@
                         {
                             if (Model.Bookmarks[i].Type == 1)
                             {
+                                <tr>
+                                    <td>@Model.Bookmarks[i].Description</td>
+                                    <td class="text-center">
+                                        <a class="text-decoration-none text-dark" href="~/Quran/SurahDetail/@Model.Bookmarks[i].Ayah.SurahId/@Model.Bookmarks[i].Ayah.AyahId" target="_blank">Surat</a> /
+                                        <a class="text-decoration-none text-dark" href="~/Quran/JuzDetail/@Model.Bookmarks[i].Ayah.JuzDetail.JuzId/@Model.Bookmarks[i].Ayah.Id" target="_blank">Juz</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm" title="Hapus Bookmark" onclick='deleteBookmark("@Model.Bookmarks[i].Ayah.Id","@Model.Bookmarks[i].Description","/Quran/ListBookmark")'><i class="fa fa-trash fa-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                            else if (Model.Bookmarks[i].Type == 3)
+                            {
+                                <tr>
+                                    <th colspan="3">Terakhir Dibaca</th>
+                                </tr>
                                 <tr>
                                     <td>@Model.Bookmarks[i].Description</td>
                                     <td class="text-center">

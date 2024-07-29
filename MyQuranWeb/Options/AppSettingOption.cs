@@ -15,6 +15,7 @@ namespace MyQuranWeb.Options
         public string MP3UrlSetting { get; set; }
         public string BaseUrl { get; set; }
         public string TafsirUrl { get;set; }
+        public string AsmaulHusnaUrl { get; set; }
         public string WebSiteName { get; set; }
 
     }

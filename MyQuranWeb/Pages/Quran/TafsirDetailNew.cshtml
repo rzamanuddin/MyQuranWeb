@@ -58,6 +58,7 @@ else
                             </button>
                             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Buka Sebagai Surat" id="@("btnOpen" + Model.Tafsirs.Ayahs[i].Number.InQuran)" onclick="openAyah('@Model.ID','@Model.Tafsirs.Ayahs[i].Number.InSurah', '@Model.AppSettingOption.WebSiteName')"><i class="fa fa-folder"></i></button>
                             @* <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Buka Sebagai Juz" id="@("btnOpenJuz" + Model.Tafsirs.Ayahs[i].Number.InQuran)" onclick="openJuz('@Model.Tafsirs.Ayahs[i].Ayah.JuzDetail.JuzId','@Model.Tafsirs.Ayahs[i].Id','@Model.AppSettingOption.WebSiteName')"><i class="fa fa-folder"></i></button> *@
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.Tafsirs.Ayahs[i].Number.InQuran)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
                         </div>
                     </div>
                     <div class="col-12 text-justify">
