@@ -16,6 +16,14 @@ namespace MyQuranWeb.Domain.Models
         public int Page {  get; set; }
         public string Slug { get; set; }
     }
+    public class PrayBookmark
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Type { get; set; }
+        public int ParentId { get; set; }
+        public int PrayId { get; set; }
+    }
 
     public class Bookmark
     {
@@ -24,6 +32,7 @@ namespace MyQuranWeb.Domain.Models
 
         public Ayah Ayah { get; set; }
         public HadithBookmark Hadith { get; set; }
+        public PrayBookmark Pray { get; set; }
         public string Description
         {
             get

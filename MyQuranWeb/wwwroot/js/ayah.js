@@ -175,6 +175,36 @@ function copyAsmaulHusna(index, judul, no, arabText, translateIndo) {
     });
 }
 
+function copyPray(index, judul, no, arabText, textIndo, translateIndo, narrator) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateIndo;
+
+    var copiedText = "Kumpulan Doa No. " + judul + "\n\n" + arabText + "\n\n" + textIndo + "\n\n" + txt.value + "\n\n" + narrator + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: "Salin Doa",
+        content: "Doa No. " + no + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
+
 //function copyAyah(ayahID, surahID, ayah, textIndo, translateIndo) {
 //    var copiedText = "Q.S. " + surahID + ":" + ayahID + "\n" + ayah + "\n" + textIndo + "\n" + translateIndo;
 

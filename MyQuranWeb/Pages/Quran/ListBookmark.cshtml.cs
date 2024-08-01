@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyQuranWebRepository.Interfaces;
 using MyQuranWeb.Domain.Models;
+using System.Net;
 
 namespace MyQuranWeb.Pages.Quran
 {
@@ -104,7 +105,26 @@ namespace MyQuranWeb.Pages.Quran
 
                     //if (cookie.Key.Contains("arbain"))
                     b.Hadith.Type = 1;
+                    Bookmarks.Add(b);
+                    r++;
+                }
 
+
+                var cPrays = Request.Cookies.Where(x => x.Key.Contains("book_pray"));
+                r = 1;
+                foreach (var cookie in cPrays)
+                {
+                    var b = new Bookmark();
+                    b.ID = r;
+                    b.Type = 4;
+                    b.Pray = new PrayBookmark();
+                    b.Pray.Name = cookie.Key;
+
+                    var cValue = cookie.Value.Split("|");
+
+                    b.Pray.ParentId = Convert.ToInt32(cValue[0]);
+                    b.Pray.PrayId = Convert.ToInt32(cValue[1]);
+                    b.Pray.Description = cValue[2];
                     Bookmarks.Add(b);
 
                     r++;

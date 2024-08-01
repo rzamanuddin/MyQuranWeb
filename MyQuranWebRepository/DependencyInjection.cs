@@ -5,6 +5,8 @@ using MyQuranWeb.Domain.Models;
 using MyQuranWebRepository.Hadiths;
 using MyQuranWebRepository.Interfaces;
 using MyQuranWebRepository.Interfaces.Hadiths;
+using MyQuranWebRepository.Interfaces.Prays;
+using MyQuranWebRepository.Prays;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,7 @@ namespace MyQuranWebRepository
             services.AddScoped<IJuzHeaderRepository, JuzHeaderRepository>();
             services.AddScoped<IJuzDetailRepository, JuzDetailRepository>();
             services.AddScoped<IHadithRepository, HadithRepository>();
+            services.AddScoped<IPrayRepository, PrayRepository>();
             services.AddScoped<IAsmaulHusnaRepository, AsmaulHusnaRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services.AddOptions<AppSettingModel>();

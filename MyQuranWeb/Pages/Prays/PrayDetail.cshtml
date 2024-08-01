@@ -1,0 +1,94 @@
+﻿@page "{PrayDataId?}/{PrayDetailId?}"
+@model MyQuranWeb.Pages.Prays.PrayDetailModel
+@{
+    ViewData["Title"] = $"Kumpulan Doa {Model.PrayData!.Title}";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+else
+{
+    <div id="snackbar"></div>
+
+    <div class="form-group form-row">
+        <label class="col-lg-9 col-md-4 col-sm-3 col-5 text-right font-weight-bold" for="@Model.PrayDataId">Pilih :</label>
+        <div class="col-sm-7 col-md-7 col-lg-2 col-6">
+            <select asp-for="@Model.PrayDataId" asp-items="Model.PrayList" class="form-control form-control-sm" id="searchPrayId" data-toggle="tooltip" title="Kumpulan Doa">
+            </select>
+        </div>
+        <div class="col-sm-2 col-md-1 col-lg-1 col-1">
+            <select asp-for="@Model.PrayDetailId" asp-items="Model.PrayDetailList" class="form-control form-control-sm" id="searchPrayDetailId" data-toggle="tooltip" title="No.">
+            </select>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@(Model.PrayData != null ? "Doa Terkait " + Model.PrayData.Title : "")</p>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.PrayData!.Data.Count; i++)
+            {
+                var alternateColor = "";
+                var bookmarks = "fa-bookmark-o";
+                var cookieName = $"book_pray_{Model.PrayData.ID}_{Model.PrayData.Data[i].ID}";
+                var cookieValue = $"{Model.PrayData.ID}|{Model.PrayData.Data[i].ID}|{Model.PrayData.Data[i].Title}";
+                if (!string.IsNullOrEmpty(Request.Cookies[cookieName]))
+                {
+                    bookmarks = "fa-bookmark";
+                }
+
+                @if (@Model.PrayData.Data[i].ID % 2 == 1) { alternateColor = "alert-secondary"; }
+                <div class="form-group form-row @alternateColor text-dark" id="div_@Model.PrayData.Data[i].ID">
+                    @*<div class="col-sm-2 col-md-2 col-lg-1">*@
+                    <div class="col-8 text-left">
+                        <p class="font-weight-bold">@Model.PrayData.Data[i].ID. @Model.PrayData.Data[i].Title</p>
+                    </div>
+                    <div class="col-4 text-right">
+                        <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Doa'" id="@("btnCopy" + i)" onclick='copyPray("@i","@Model.PrayData.Data[i].Description","@Model.PrayData.Data[i].ID", "@Model.PrayData.Data[i].Arabic","@Model.PrayData.Data[i].ArabicLatin", "@Html.Encode(Model.PrayData.Data[i].TranslateID)", "@Model.PrayData.Data[i].Narrator")'><i class="fa fa-clone"></i></button>
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Bookmark" id="@("btnBookmark" + cookieName)" onclick="setCookie('@cookieName','@cookieValue','100')"><i id="bookmark@(cookieName)" class="fa @bookmarks"></i></button>
+                            <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.PrayData.Data[i].ID)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-12 text-right">
+                        <p class="h3 arab">@Model.PrayData.Data[i].Arabic</p>
+                    </div>
+                    <div class="col-12 text-justify">
+                        <p>@Model.PrayData.Data[i].ArabicLatin</p>
+                    </div>
+                    <div class="col-12 text-justify">
+                        <p class="translate"><small>@Model.PrayData.Data[i].TranslateID</small></p>
+                    </div>
+                    <div class="col-12 text-justify">
+                        <p class="font-weight-bold small">@Model.PrayData.Data[i].Narrator</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+        var prayDetailId = $("#searchPrayDetailId").val();
+        scrollToAyah(prayDetailId);
+
+        $(document).ready(function () {
+            $('#searchPrayId').on('change', function () {
+                var origin = window.location.origin;
+                window.location.replace(websiteUrl + "/Prays/PrayDetail/" + $(this).val());
+            });
+
+            $('#searchPrayDetailId').on('change', function () {
+                var origin = window.location.origin;
+                scrollToAyah($(this).val());
+            });
+        });
+    </script>
+}

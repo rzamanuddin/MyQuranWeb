@@ -1,7 +1,7 @@
 ﻿@page
-@model MyQuranWeb.Pages.Hadith.ListHadithModel
+@model MyQuranWeb.Pages.Prays.ListPrayModel
 @{
-    ViewData["Title"] = "Daftar Ahli Hadis";
+    ViewData["Title"] = "Daftar Kumpulan Doa";
 }
 
 @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
@@ -18,12 +18,12 @@
     <div class="card-body">
         <div class="form-group">
             <table class="table table-sm table-striped table-hover table-borderless">
-                @for (int i = 0; i < Model.Narrators.Count; i++)
-                {                    
+                @for (int i = 0; i < Model.Prays.Count; i++)
+                {
                     <tr>
                         @{
-                            var narrator = Model.Narrators[i];
-                            <td><a href="~/Hadith/HadithDetail/@narrator.Slug/1" target="_blank" class="text-decoration-none text-dark">@($"{i + 1}. {narrator.DisplaySubTitle}")</a></td>
+                            var pray = Model.Prays[i];
+                            <td><a href="~/Prays/PrayDetail/@pray.ID" target="_blank" class="text-decoration-none text-dark">@($"{pray.Description}")</a></td>
                         }
                     </tr>
                 }
