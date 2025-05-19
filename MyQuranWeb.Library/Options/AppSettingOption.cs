@@ -18,6 +18,10 @@ namespace MyQuranWeb.Library.Options
         public string HadithUrl { get; set; }
         public string AsmaulHusnaUrl { get; set; }
         public string PrayUrl { get; set; }
+        public string IntentionUrl { get; set; }
+        public string PrayerReadUrl { get; set; }
+        public string PrayerZikrUrl { get; set; }
+        public string PrayerZikrUrl2 { get; set; }
         public int LimitPage { get; set; }
         public string WebSiteName { get; set; }
     }

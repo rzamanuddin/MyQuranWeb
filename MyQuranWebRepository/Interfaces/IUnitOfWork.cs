@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MyQuranWebRepository.Interfaces.Hadiths;
+using MyQuranWebRepository.Interfaces.Prayers;
 using MyQuranWebRepository.Interfaces.Prays;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace MyQuranWebRepository.Interfaces
         IJuzHeaderRepository JuzHeaders { get; }
         IConfiguration Configuration { get; }
         IAsmaulHusnaRepository AsmaulHusnas { get; }
+        IPrayerRepository Prayers { get; }
 
         IPrayRepository Prays { get; }
     }

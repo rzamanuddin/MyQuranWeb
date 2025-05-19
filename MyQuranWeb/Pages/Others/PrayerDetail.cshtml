@@ -1,0 +1,174 @@
+﻿@page "{number:int?}"
+@model MyQuranWeb.Pages.Others.PrayerDetailModel
+@{
+    ViewData["Title"] = "Sholat";
+}
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-danger">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+else
+{
+    <div id="snackbar"></div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@ViewData["Title"]</p>
+        </div>
+        <div class="card-body">
+            @* Nav Tab *@
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#tpIntention">Niat Sholat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tpPrayerRead">Bacaan Sholat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tpPrayerZikr1">Zikir Setelah Sholat 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tpPrayerZikr2">Zikir Setelah Sholat 2</a>
+                </li>
+            </ul>
+            @* Tab Pane *@
+            <div class="tab-content">
+                <br />
+                <div class="tab-pane container fade i show active" id="tpIntention">
+                    @for (int i = 0; i < Model.Intentions.Count; i++)
+                    {
+                        var alternateColor = "";
+                        string title = $"{Model.Intentions[i].Id}. Niat {Model.Intentions[i].Title}";
+
+                        @if (@Model.Intentions[i].Id % 2 == 1) { alternateColor = "alert-secondary"; }
+                        <div class="form-group form-row @alternateColor text-dark" id="div_@Model.Intentions[i].Id">
+                            <div class="col-8 text-left">
+                                <p class="font-weight-bold">@title</p>
+                            </div>
+                            <div class="col-4 text-right align-top">
+                                <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Niat Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.Intentions[i].Arabic","@Model.Intentions[i].ArabicLatin","@Html.Encode(Model.Intentions[i].TranslateID)")'><i class="fa fa-clone"></i></button>
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.Intentions[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12 text-right">
+                                <p class="h3 arab">@Model.Intentions[i].Arabic</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p>@Model.Intentions[i].ArabicLatin</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p class="translate"><small>@Model.Intentions[i].TranslateID</small></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="tab-pane container fade in show" id="tpPrayerRead">
+                    @for (int i = 0; i < Model.PrayerReads.Count; i++)
+                    {
+                        var alternateColor = "";
+                        string title = $"{Model.PrayerReads[i].Id}. {Model.PrayerReads[i].Title}";
+
+                        @if (@Model.PrayerReads[i].Id % 2 == 1) { alternateColor = "alert-secondary"; }
+                        <div class="form-group form-row @alternateColor text-dark" id="div_@Model.PrayerReads[i].Id">
+                            <div class="col-8 text-left">
+                                <p class="font-weight-bold">@title</p>
+                            </div>
+                            <div class="col-4 text-right align-top">
+                                <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Niat Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerReads[i].Arabic","@Model.PrayerReads[i].ArabicLatin","@Html.Encode(Model.PrayerReads[i].TranslateID)")'><i class="fa fa-clone"></i></button>
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.PrayerReads[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12 text-right">
+                                <p class="h3 arab">@Model.PrayerReads[i].Arabic</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p>@Model.PrayerReads[i].ArabicLatin</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p class="translate"><small>@Model.PrayerReads[i].TranslateID</small></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="tab-pane container fade in show" id="tpPrayerZikr1">
+                    @for (int i = 0; i < Model.PrayerZikrs.Count; i++)
+                    {
+                        var alternateColor = "";
+                        string title = $"{Model.PrayerZikrs[i].Id}. {Model.PrayerZikrs[i].Title}";
+
+                        @if (@Model.PrayerZikrs[i].Id % 2 == 1) { alternateColor = "alert-secondary"; }
+                        <div class="form-group form-row @alternateColor text-dark" id="div_@Model.PrayerZikrs[i].Id">
+                            <div class="col-8 text-left">
+                                <p class="font-weight-bold">@title</p>
+                            </div>
+                            <div class="col-4 text-right align-top">
+                                <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Niat Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerZikrs[i].Arabic","@Model.PrayerZikrs[i].ArabicLatin","@Html.Encode(Model.PrayerZikrs[i].TranslateID)")'><i class="fa fa-clone"></i></button>
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.PrayerZikrs[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12 text-right">
+                                <p class="h3 arab">@Model.PrayerZikrs[i].Arabic</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p>@Model.PrayerZikrs[i].ArabicLatin</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p class="translate"><small>@Model.PrayerZikrs[i].TranslateID</small></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="tab-pane container fade in show" id="tpPrayerZikr2">
+                    @for (int i = 0; i < Model.PrayerZikrs2.Count; i++)
+                    {
+                        var alternateColor = "";
+                        string title = $"{Model.PrayerZikrs2[i].Id}. {Model.PrayerZikrs2[i].Title}";
+
+                        @if (@Model.PrayerZikrs2[i].Id % 2 == 1) { alternateColor = "alert-secondary"; }
+                        <div class="form-group form-row @alternateColor text-dark" id="div_@Model.PrayerZikrs2[i].Id">
+                            <div class="col-8 text-left">
+                                <p class="font-weight-bold">@title</p>
+                            </div>
+                            <div class="col-4 text-right align-top">
+                                <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Niat Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerZikrs2[i].Arabic","@Model.PrayerZikrs2[i].ArabicLatin","@Html.Encode(Model.PrayerZikrs2[i].TranslateID)")'><i class="fa fa-clone"></i></button>
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.PrayerZikrs2[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12 text-right">
+                                <p class="h3 arab">@Model.PrayerZikrs2[i].Arabic</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p>@Model.PrayerZikrs2[i].ArabicLatin</p>
+                            </div>
+                            <div class="col-12 text-justify">
+                                <p class="translate"><small>@Model.PrayerZikrs2[i].TranslateID</small></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style type="text/css">
+    .smartControl {
+        top: 3em;
+        padding-left: 1em;
+        z-index: 1;
+    }
+
+    .control {
+        position: sticky;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+    });
+</script>

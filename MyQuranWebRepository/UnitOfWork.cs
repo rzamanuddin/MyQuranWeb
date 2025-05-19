@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MyQuranWebRepository.Interfaces;
 using MyQuranWebRepository.Interfaces.Hadiths;
+using MyQuranWebRepository.Interfaces.Prayers;
 using MyQuranWebRepository.Interfaces.Prays;
 using System;
 using System.Collections.Generic;
@@ -22,18 +23,21 @@ namespace MyQuranWeb.Domain.Models
         public IHadithRepository Hadiths { get; }
         public IAsmaulHusnaRepository AsmaulHusnas { get; }
         public IPrayRepository Prays { get; }
+        public IPrayerRepository Prayers { get; }
 
         public IConfiguration Configuration { get; }
+
         public UnitOfWork(MyQuranContext myQuranContext,
-            IAyahRepository ayahRepository, 
-            ISurahRepository surahRepository, 
-            ITafsirRepository tafsirRepository, 
+            IAyahRepository ayahRepository,
+            ISurahRepository surahRepository,
+            ITafsirRepository tafsirRepository,
             ITafsirNewRepository tafsirNewRepository,
             IJuzDetailRepository juzRepository,
             IJuzHeaderRepository juzHeaderRepository,
             IHadithRepository hadithsRepository,
             IAsmaulHusnaRepository asmaulHusnasRepository,
             IPrayRepository prayRepository,
+            IPrayerRepository intentionRepository,
             IConfiguration configuration)
         {
             this._context = myQuranContext ?? throw new ArgumentNullException(nameof(myQuranContext));
@@ -46,6 +50,7 @@ namespace MyQuranWeb.Domain.Models
             this.Hadiths = hadithsRepository;
             this.AsmaulHusnas = asmaulHusnasRepository;
             this.Prays = prayRepository;
+            this.Prayers = intentionRepository ?? throw new ArgumentNullException(nameof(intentionRepository));
             this.Configuration = configuration;
         }
 

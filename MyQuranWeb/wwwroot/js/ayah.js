@@ -175,6 +175,36 @@ function copyAsmaulHusna(index, judul, no, arabText, translateIndo) {
     });
 }
 
+function copyPrayerRead(index, judul, arabText, arabLatin, translateIndo) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateIndo;
+
+    var copiedText = judul + "\n\n" + arabText + "\n\n" + arabLatin + "\n\n" + txt.value + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: 'Salin Bacaan Sholat',
+        content: judul + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
+
 function copyPray(index, judul, no, arabText, textIndo, translateIndo, narrator) {
     var txt = document.createElement("textarea");
     txt.innerHTML = translateIndo;
