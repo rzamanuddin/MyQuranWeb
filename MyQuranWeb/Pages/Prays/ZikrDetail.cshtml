@@ -1,0 +1,171 @@
+﻿@page "{number:int?}"
+@model MyQuranWeb.Pages.Prays.ZikrDetailModel
+@{
+    ViewData["Title"] = "Zikir Pagi & Petang";
+}
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div id="error" class="alert alert-dange">
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+else
+{
+    <div id="snackbar"></div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@ViewData["Title"]</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#tpZikirPagi">Zikir Pagi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tpZikirPetang">Zikir Petang</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <br />
+            <div class="tab-pane container fade in show active" id="tpZikirPagi">
+                @{var r = 0;}
+                @for (int i = 0; i < Model.ZikrMornings.Count; i++)
+                {
+                    var alternateColor = "";
+                    var zikr = Model.ZikrMornings[i];
+                    string title = $"{r}. {zikr.Title} ({zikr.Note})";
+                    var textAlign = "";
+                    if (zikr.Id == 0)
+                    {
+                        textAlign = "text-center";
+                        title = "";
+                    }
+
+                    var arabicLatin = new System.Text.StringBuilder();
+                    if (zikr.Id == 2)
+                    {
+                        @foreach (var item in Model.Ayahs)
+                        {
+                            arabicLatin.AppendLine($"{item.ReadIndo}");
+                        }
+                    }
+                    else
+                    {
+                        arabicLatin.AppendLine(zikr.ArabicLatin);
+                    }
+
+                    var translatedId = new System.Text.StringBuilder();
+                    @foreach (var item in zikr.TranslateID.Split("@"))
+                    {
+                        translatedId.AppendLine(item);
+                    }
+
+                    var faedah = $"(Faedah: {zikr.Faedah})";
+
+                    @if (r % 2 == 0) { alternateColor = "alert-secondary"; }
+                    <div class="form-group form-row @alternateColor text-dark" id="div_zikr_morning_@Model.Zikrs.Data[i].Id">
+                        <div class="col-8 text-left">
+                            <p class="font-weight-bold">@title</p>
+                        </div>
+                        <div class="col-4 text-right align-top">
+                            <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Zikir" id="@("btnCopy" + i)" onclick='copyZikr("@i","@title","@zikr.Arabic","@zikr.ArabicLatin","@Html.Encode(translatedId.ToString())", "@Html.Encode(faedah)")'><i class="fa fa-clone"></i></button>
+                                <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + zikr.Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-12 text-right">
+                            <p class="h3 arab @textAlign">@zikr.Arabic</p>
+                        </div>
+                        <div class="col-12 text-justify">
+                            <p>@arabicLatin</p>
+                        </div>
+                        <div class="col-12 text-justify">
+                            @foreach (var item in zikr.TranslateID.Split("@"))
+                            {
+                                <p class="translate"><small>@translatedId</small><br /></p>
+                            }
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(zikr.Faedah))
+                        {
+                            <div class="col-12 text-justify">
+                                <p class="translate"><small><em>@faedah</em></small></p>
+                            </div>
+                        }
+                    </div>
+                    r++;
+                }
+            </div>
+            <div class="tab-pane container fade in show" id="tpZikirPetang">
+                @{
+                    r = 0;
+                }
+                @for (int i = 0; i < Model.ZikrAfterNoons.Count; i++)
+                {
+                    var alternateColor = "";
+                    var zikr = Model.ZikrAfterNoons[i];
+                    string title = $"{r}. {zikr.Title} ({zikr.Note})";
+                    var textAlign = "";
+                    if (zikr.Id == 0)
+                    {
+                        textAlign = "text-center";
+                        title = "";
+                    }
+
+                    var arabicLatin = new System.Text.StringBuilder();
+                    if (zikr.Id == 2)
+                    {
+                        @foreach (var item in Model.Ayahs)
+                        {
+                            arabicLatin.AppendLine($"{item.ReadIndo}");
+                        }
+                    }
+                    else
+                    {
+                        arabicLatin.AppendLine(zikr.ArabicLatin);
+                    }
+
+                    var translatedId = new System.Text.StringBuilder();
+                    @foreach (var item in zikr.TranslateID.Split("@"))
+                    {
+                        translatedId.AppendLine(item);
+                    }
+
+                    var faedah = $"(Faedah: {zikr.Faedah})";
+
+                    @if (r % 2 == 0) { alternateColor = "alert-secondary"; }
+                    <div class="form-group form-row @alternateColor text-dark" id="div_zikr_afternoon_@Model.Zikrs.Data[i].Id">
+                        <div class="col-8 text-left">
+                            <p class="font-weight-bold">@title</p>
+                        </div>
+                        <div class="col-4 text-right align-top">
+                            <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Zikir" id="@("btnCopy" + i)" onclick='copyZikr("@i","@title","@zikr.Arabic","@zikr.ArabicLatin","@Html.Encode(translatedId.ToString())", "@Html.Encode(faedah)")'><i class="fa fa-clone"></i></button>
+                                <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + zikr.Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-12 text-right">
+                            <p class="h3 arab @textAlign">@zikr.Arabic</p>
+                        </div>
+                        <div class="col-12 text-justify">
+                            <p>@arabicLatin</p>
+                        </div>
+                        <div class="col-12 text-justify">
+                            @foreach (var item in zikr.TranslateID.Split("@"))
+                            {
+                                <p class="translate"><small>@translatedId</small><br /></p>
+                            }
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(zikr.Faedah))
+                        {
+                            <div class="col-12 text-justify">
+                                <p class="translate"><small><em>@faedah</em></small></p>
+                            </div>
+                        }
+                    </div>
+                    r++;
+                }
+            </div>
+        </div>
+    </div>
+}

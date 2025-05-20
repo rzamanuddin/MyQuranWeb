@@ -12,5 +12,7 @@ namespace MyQuranWebRepository.Interfaces.Prays
     {
         Task<IEnumerable<PrayData>> Get();
         Task<PrayData> Get(int prayDataId);
+        Task<ZikrData> GetZikr();
+
     }
 }

@@ -51,5 +51,17 @@ namespace MyQuranWebRepository.Prays
             }
             return prayData;
         }
+
+        public async Task<ZikrData> GetZikr()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_appSettingOption.ZikrUrl}");
+            using (var response = await _client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<ZikrData>(await response.Content.ReadAsStringAsync());
+                return result;
+            }
+        }
     }
 }

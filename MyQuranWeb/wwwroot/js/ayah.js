@@ -205,6 +205,39 @@ function copyPrayerRead(index, judul, arabText, arabLatin, translateIndo) {
     });
 }
 
+function copyZikr(index, judul, arabText, arabLatin, translateIndo, faedah) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = translateIndo;
+
+    var txtFaedah = document.createElement("textarea");
+    txtFaedah.innerHTML = faedah;
+
+    var copiedText = judul + "\n\n" + arabText + "\n\n" + arabLatin + "\n\n" + txt.value + "\n\n" + txtFaedah.value + "\n\n*Via MyQuranWeb Indonesia \n" + window.location.origin;
+
+    var $temp = $("<textarea>");
+
+    $("body").append($temp);
+    $temp.val(copiedText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#btnCopy" + index).focus();
+
+    $.confirm({
+        title: 'Salin Zikir Pagi & Petang',
+        content: judul + " berhasil disalin.",
+        autoClose: 'ok|2000',
+        buttons: {
+            ok: {
+                text: 'OK',
+                action: function () {
+                    //$('#ayahModal').modal('hide');
+                }
+            }
+        }
+    });
+}
+
 function copyPray(index, judul, no, arabText, textIndo, translateIndo, narrator) {
     var txt = document.createElement("textarea");
     txt.innerHTML = translateIndo;

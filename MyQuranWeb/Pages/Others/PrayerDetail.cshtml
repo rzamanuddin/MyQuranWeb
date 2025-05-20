@@ -35,7 +35,7 @@ else
             @* Tab Pane *@
             <div class="tab-content">
                 <br />
-                <div class="tab-pane container fade i show active" id="tpIntention">
+                <div class="tab-pane container fade in show active" id="tpIntention">
                     @for (int i = 0; i < Model.Intentions.Count; i++)
                     {
                         var alternateColor = "";
@@ -77,7 +77,7 @@ else
                             </div>
                             <div class="col-4 text-right align-top">
                                 <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Niat Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerReads[i].Arabic","@Model.PrayerReads[i].ArabicLatin","@Html.Encode(Model.PrayerReads[i].TranslateID)")'><i class="fa fa-clone"></i></button>
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Bacaan Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerReads[i].Arabic","@Model.PrayerReads[i].ArabicLatin","@Html.Encode(Model.PrayerReads[i].TranslateID)")'><i class="fa fa-clone"></i></button>
                                     <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.PrayerReads[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@ else
                             </div>
                             <div class="col-4 text-right align-top">
                                 <div class="btn-group btn-group-sm mp3Player" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Niat Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerZikrs[i].Arabic","@Model.PrayerZikrs[i].ArabicLatin","@Html.Encode(Model.PrayerZikrs[i].TranslateID)")'><i class="fa fa-clone"></i></button>
+                                    <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Salin Zikir Setelah Shalat" id="@("btnCopy" + i)" onclick='copyPrayerRead("@i","@title","@Model.PrayerZikrs[i].Arabic","@Model.PrayerZikrs[i].ArabicLatin","@Html.Encode(Model.PrayerZikrs[i].TranslateID)")'><i class="fa fa-clone"></i></button>
                                     <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Kembali Ke Atas" id="@("btnBackToTop" + Model.PrayerZikrs[i].Id)" onclick='scrollToAyah(1)'><i class="fa fa-arrow-up"></i></button>
                                 </div>
                             </div>
@@ -155,18 +155,6 @@ else
         </div>
     </div>
 }
-<style type="text/css">
-    .smartControl {
-        top: 3em;
-        padding-left: 1em;
-        z-index: 1;
-    }
-
-    .control {
-        position: sticky;
-    }
-</style>
-
 <script type="text/javascript">
     $(document).ready(function () {
         var websiteUrl = '@Model.AppSettingOption.WebSiteName';

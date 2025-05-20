@@ -22,6 +22,7 @@ namespace MyQuranWeb.Library.Options
         public string PrayerReadUrl { get; set; }
         public string PrayerZikrUrl { get; set; }
         public string PrayerZikrUrl2 { get; set; }
+        public string ZikrUrl { get; set; }
         public int LimitPage { get; set; }
         public string WebSiteName { get; set; }
     }

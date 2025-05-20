@@ -7,6 +7,7 @@ namespace MyQuranWeb.Domain.Models
 {
     public partial class Ayah
     {
+        public const string Bismillah = "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ";
         public int Id { get; set; }
         public int AyahId { get; set; }
         public int SurahId { get; set; }
