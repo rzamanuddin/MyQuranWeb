@@ -25,6 +25,11 @@
                 page = "HadithBMDetail";
                 lastPage = Model.LastPage;
             }
+            else if (Model.Type == 5)
+            {
+                page = "SurahDetailPage";
+                lastPage = 604;
+            }
             if (Model.Type <= 2)
             {
                 if (Model.ID.HasValue && Model.ID.Value > 1)
@@ -51,7 +56,7 @@
                     <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@Model.Slug/@(lastPage)" data-toggle="tooltip" title="Halaman Terakhir"><i class="fa fa-angle-double-right fa-2x"></i></a>
                 }
             }
-            else 
+            else  if(Model.Type == 4)
             {
 
                 if (Model.ID.HasValue && Model.ID.Value > 1)
@@ -63,6 +68,20 @@
                 {
                     <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@(Model.ID.Value + 1)" data-toggle="tooltip" title="Halaman Berikutnya"><i class="fa fa-angle-right fa-2x"></i></a>
                     <a class="btn btn-outline-dark" href="~/Hadith/@(page)/@(lastPage)" data-toggle="tooltip" title="Halaman Terakhir"><i class="fa fa-angle-double-right fa-2x"></i></a>
+                }
+            }
+            else if (Model.Type == 5)
+            {
+
+                if (Model.AyahPageId.HasValue && Model.AyahPageId.Value > 1)
+                {
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/1/1" data-toggle="tooltip" title="Halaman Pertama"><i class="fa fa-angle-double-left fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/@(Model.ID.Value)/@(Model.AyahPageId.Value - 1)" data-toggle="tooltip" title="Halaman Sebelumnya"><i class="fa fa-angle-left fa-2x"></i></a>
+                }
+                if (Model.AyahPageId.HasValue && Model.AyahPageId.Value < lastPage)
+                {
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/@(Model.ID.Value)/@(Model.AyahPageId.Value + 1)" data-toggle="tooltip" title="Halaman Berikutnya"><i class="fa fa-angle-right fa-2x"></i></a>
+                    <a class="btn btn-outline-dark" href="~/Quran/@(page)/114/@(lastPage)" data-toggle="tooltip" title="Halaman Terakhir"><i class="fa fa-angle-double-right fa-2x"></i></a>
                 }
             }
         }

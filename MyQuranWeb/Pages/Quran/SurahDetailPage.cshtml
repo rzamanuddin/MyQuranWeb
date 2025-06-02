@@ -1,0 +1,40 @@
+﻿@page "{id:int?}/{pageId?}"
+@model MyQuranWeb.Pages.Quran.SurahDetailPageModel
+@{
+    ViewData["Title"] = $"Baca Al-Qur'an Per Halaman";
+}
+<div id="snackbar"></div>
+<div class="form-group form-row">
+    <div class="col-12 text-right">
+        <partial name="_Navigation" model="Model.Navigation" />
+    </div>
+</div>
+<div class="form-group form-row">
+    <label class="col-lg-9 col-md-8 col-sm-6 col-8 text-right font-weight-bold" for="@Model.PageTypeId">Tampilan :</label>
+    <div class="col-lg-3 col-md-4 col-sm-6 col-4">
+        <select asp-for="@Model.PageTypeId" asp-items="Model.PageTypes" class="form-control form-control-sm searchList" id="searchPageTypeId">
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+            <img src="@Model.PageUrl" class="img-thumbnail" alt="...">
+        </div>
+    <div class="col-md-2"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var websiteUrl = '@Model.AppSettingOption.WebSiteName';
+
+        $('#searchPageTypeId').on('change', function () {
+            var origin = window.location.origin;
+            if ($(this).val() == 1) {
+                window.location.replace(websiteUrl + "/Quran/SurahDetail/@Model.Id/1");
+            } else {
+                window.location.replace(websiteUrl + "/Quran/SurahDetailPage/@Model.Id" + '/@Model.PageId');
+            }
+        });
+    });
+</script>

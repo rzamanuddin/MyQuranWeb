@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MyQuranWeb.Domain.Models.Hadiths;
 using MyQuranWeb.Library.Options;
 using MyQuranWebRepository.Interfaces;
@@ -34,11 +35,11 @@ namespace MyQuranWeb.Pages
 
                 return fontSize;
             }
-        }           
+        }
 
         private AppSettingOption _appSettingOption;
-        public AppSettingOption AppSettingOption 
-        { 
+        public AppSettingOption AppSettingOption
+        {
             get
             {
                 string qariSetting = Request.Cookies["qariSetting"];
@@ -65,5 +66,19 @@ namespace MyQuranWeb.Pages
                 _appSettingOption = value;
             }
         }
+        public IEnumerable<SelectListItem> PageTypes
+        {
+            get
+            {
+                var result = new List<SelectListItem>();
+                result.Add(new SelectListItem() { Value = "1", Text = "Per Ayat" });
+                result.Add(new SelectListItem() { Value = "2", Text = "Per Halaman" });
+
+                return result;
+            }
+
+        }
+
+        public virtual int PageTypeId { get; set; } = 1;
     }
 }

@@ -20,6 +20,13 @@ else
         </div>
     </div>
     <div class="form-group form-row">
+        <label class="col-lg-9 col-md-8 col-sm-7 col-9 text-right font-weight-bold" for="@Model.PageTypeId">Tampilan :</label>
+        <div class="col-lg-3 col-md-4 col-sm-5 col-3">
+            <select asp-for="@Model.PageTypeId" asp-items="Model.PageTypes" class="form-control form-control-sm searchList" id="searchPageTypeId">
+            </select>
+        </div>
+    </div>
+    <div class="form-group form-row">
         @*<div class="col-form-label text-right col-lg-9 col-md-7 col-sm-7">
     </div>*@
         <label class="col-lg-9 col-md-7 col-sm-7 col-4 text-right font-weight-bold" for="@Model.ID">Pilih :</label>
@@ -315,6 +322,15 @@ else
         $('#searchAyahID').on('change', function () {
             var origin = window.location.origin;
             scrollToAyah($(this).val());
+        });
+
+        $('#searchPageTypeId').on('change', function () {
+            var origin = window.location.origin;
+            if ($(this).val() == 1) {
+                window.location.replace(websiteUrl + "/Quran/SurahDetail/@Model.ID/1");
+            } else {
+                window.location.replace(websiteUrl + "/Quran/SurahDetailPage/@Model.ID");
+            }
         });
     });
 

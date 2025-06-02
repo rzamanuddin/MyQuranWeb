@@ -19,5 +19,9 @@ namespace MyQuranWebRepository.Interfaces
         Task<IEnumerable<Ayah>> GetBySurahID(int surahID);
         Task<Ayah> GetBySurahAndAyahID(int surahID, int ayahID);
         Task<Ayah> GetByIDForPopUp(int id);
+        Task<IEnumerable<AyahPage>> GetPageBySurahId(int surahID);
+        Task<AyahPage> GetPageBySurahAndPageId(int surahId, int pageId);
+        Task<AyahPage> GetPageById(int pageId);
+        Task<string> GetPageUrlBySurahId(int surahID, int pageId = 0);
     }
 }

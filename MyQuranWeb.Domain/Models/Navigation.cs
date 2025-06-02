@@ -12,5 +12,6 @@ namespace MyQuranWeb.Domain.Models
         public int? ID { get; set; }
         public string Slug { get; set; }
         public int LastPage { get; set; }
+        public int? AyahPageId { get; set; }
     }
 }

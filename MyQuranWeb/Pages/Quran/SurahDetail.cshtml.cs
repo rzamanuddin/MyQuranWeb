@@ -40,6 +40,7 @@ namespace MyQuranWeb.Pages.Quran
             this.unitOfWork = unitOfWork;
             this.AppSettingOption = appSettingOption.Value;
             //MP3URL = unitOfWork.Configuration["AppSettingModel:MP3Url"];
+            this.PageTypeId = 1;
         }
 
         private async Task RefreshData()
