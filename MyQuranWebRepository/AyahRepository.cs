@@ -122,5 +122,10 @@ namespace MyQuranWebRepository
                 return "";
             }
         }
+
+        public Task<IEnumerable<Ayah>> GetBySurahID(int surahID, int page, int take)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

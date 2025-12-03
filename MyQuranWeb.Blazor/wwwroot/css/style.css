@@ -1,0 +1,39 @@
+﻿.numberAyah {
+    padding-top: 1em;
+}
+
+.mp3Player {
+    padding-top: 1em;
+}
+
+.arab {
+    font-family: lpmq;
+    margin-bottom: 0.4em; /*1em*/
+    margin-top: 0.5em;
+    line-height: 2.5;
+}
+
+.arabUthmani {
+    font-family: uthmani;
+    margin-bottom: 0.4em; /*1em*/
+    margin-top: 0.5em;
+    line-height: 2;
+}
+
+.translate {
+    margin-top: -0.6em;
+}
+
+@font-face {
+    font-family: 'lpmq';
+    src: url('../font/LPMQIsepMisbah.ttf')format('truetype');        
+}
+
+@font-face {
+    font-family: 'uthmani';
+    src: url('../font/kfgqpchafsuthmanicscript_regula.otf')format('opentype');
+}
+
+.border-bottom {
+    margin-bottom: 1.5em;
+}

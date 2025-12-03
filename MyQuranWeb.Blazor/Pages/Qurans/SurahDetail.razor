@@ -1,5 +1,6 @@
 ﻿@page "/Qurans/SurahDetail/{Id:int}";
 @inherits PageBase;
+
 <PageTitle>@PageTitle</PageTitle>
 
 @if (!String.IsNullOrWhiteSpace(ErrorMessage))
@@ -8,40 +9,117 @@
         <span>@ErrorMessage</span>
     </div>
 }
-
-
-<div class="form-group form-row">
-    @*<div class="col-form-label text-right col-lg-9 col-md-7 col-sm-7">
+else
+{
+    @* <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick">Show Modal</Button> *@
+    <Modal @ref="modal">
+        <BodyTemplate>
+            Modal body text goes here.
+        </BodyTemplate>
+        <FooterTemplate>
+            <Button Color="ButtonColor.Primary" @onclick="OnCopyTafsirClick"><Icon CustomIconName="fa fa-clone" /> Salin</Button>
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick"><Icon CustomIconName="fa fa-close" /> Close</Button>
+        </FooterTemplate>
+    </Modal>
+    <div class="mt-3 bg-success text-white bg-opacity-75">
+        @tafsirText
+    </div>
+    <div class="form-group form-row">
+        @*<div class="col-form-label text-right col-lg-9 col-md-7 col-sm-7">
     </div>*@
-    <label class="col-lg-9 col-md-7 col-sm-7 col-4 text-right font-weight-bold" for="@Id">Pilih :</label>
-    @*<div class="offset-lg-9 offset-md-7 offset-sm-7 offset-7 col-lg-2 col-md-3 col-sm-3 col-3">*@
-    <div class="col-lg-2 col-md-3 col-sm-3 col-5">
-       <select class="form-select form-select-sm" @bind="@Id">
-           @if(SurahList != null)
-            {
-                foreach (var s in SurahList)
+        <label class="col-lg-9 col-md-7 col-sm-7 col-4 text-right font-weight-bold" for="@Id">Pilih :</label>
+        @*<div class="offset-lg-9 offset-md-7 offset-sm-7 offset-7 col-lg-2 col-md-3 col-sm-3 col-3">*@
+        <div class="col-lg-2 col-md-3 col-sm-3 col-5">
+            <select class="form-select form-select-sm" @bind="@Id">
+                @if (SurahList != null)
                 {
-                    <option value="@s.Id">@s.NameLatin</option>
-                }
-            }
-        </select>
-    </div>
-    <div class="col-sm-2 col-md-2 col-lg-1 col-3">
-        <select class="form-select form-select-sm">
-            @if (AyahList != null)
-            {
-                foreach (var a in AyahList)
-                {
-                    if (a.AyahId == 1)
+                    foreach (var s in SurahList)
                     {
-                        <option value="@a.AyahId" selected="selected">@a.AyahId</option>
-                    }
-                    else
-                    {
-                        <option value="@a.AyahId">@a.AyahId</option>
+                        <option value="@s.Id">@s.NameLatin</option>
                     }
                 }
-            }
-        </select>
+            </select>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-1 col-3">
+            <select class="form-select form-select-sm">
+                @if (AyahList != null)
+                {
+                    foreach (var a in AyahList)
+                    {
+                        if (a.AyahId == 1)
+                        {
+                            <option value="@a.AyahId" selected="selected">@a.AyahId</option>
+                        }
+                        else
+                        {
+                            <option value="@a.AyahId">@a.AyahId</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
     </div>
-</div>
+    <div class="card">
+        <div class="card-header text-center">
+            <p class="h2">@(Surah != null ? Surah.HeaderOnly : "")</p>
+        </div>
+        <div class="card-body">
+            @* <button @onclick="ReadFromClipboard">Read from clipboard</button> *@
+            @{
+                if (Surah != null && Id.HasValue && Id.Value != 1 && Id.Value != 9)
+                {
+                    <div class="form-group">
+                        <div class="col-12">
+                            <p class="text-center @FontSizeSetting @fontArab">@bismillah</p>
+                        </div>
+                        <div class="col-12 text-left">
+                            <p class="text-center">bismillāhir-raḥmānir-raḥīm</p>
+                        </div>
+                        <div class="col-12 text-left">
+                            <p class="translate text-center"><small>Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.</small></p>
+                        </div>
+                    </div>
+                }
+            }
+            @for (int i = 0; i < AyahList.Count; i++)
+            {
+                int rowIndex = i;
+                string cookieName = "book|"; ;
+
+                @* <button @onclick="(async () => CopyToClipboard(rowIndex, AyahList[rowIndex].AyahId, AyahList[rowIndex].SurahId, AyahList[rowIndex].ReadText, AyahList[rowIndex].ReadIndo, AyahList[rowIndex].TranslateIndo))">Copy to clipboard</button> *@
+                string playerID = "player" + AyahList[i].AyahId.ToString();
+                //string lastAyah = "lastAyah" + AyahList[i].AyahId.ToString();
+                <div class="row" id="@AyahList[i].Id">
+                    <div class="col-2 text-start small">
+                        <p>@AyahList[i].AyahId</p>
+                    </div>
+                    <div class="col-10 text-end">
+                        <div class="btn-group btn-group-sm mp3Player" role="group">
+                            @* <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" title="Play/Pause" onclick="playAudio('@(i+1)')" id="btnAudio@(i+1)"><i id="playBtn@(i+1)" class="fa fa-play"></i></button> *@
+                            <Button Color="ButtonColor.Light" TooltipTitle="Salin Ayat & Terjemah" @onclick="(() => CopyToClipboard(rowIndex, AyahList[rowIndex].AyahId, AyahList[rowIndex].SurahId, AyahList[rowIndex].ReadText, AyahList[rowIndex].ReadIndo, AyahList[rowIndex].TranslateIndo))"><i class="fa fa-clone"></i></Button>
+                            @*<button type="button" class="btn btn-outline-dark" data-toggle="modal" title="Tafsir @tafsir" data-target="#tafsirModal" data-id="@Model.Ayahs[i].Id" data-surahid="@Model.Ayahs[i].SurahId" data-ayahid="@Model.Ayahs[i].AyahId" data-title="@($"Tafsir {@tafsir} Q.S. {Model.Surah.Id}:{i + 1}")"><i class="fa fa-book"></i></button>*@
+                            <Button Color="ButtonColor.Light" TooltipTitle="Salin Tafsir" TooltipColor="TooltipColor.Light" @onclick="(() => ShowTafsirComponent(AyahList[rowIndex].Id))"><Icon Name="IconName.Book"/></Button>
+                            <Button Color="ButtonColor.Light" TooltipTitle="Bookmark" id="@("btnBookmark" + AyahList[rowIndex].Id)" @onclick="(() => SetStorage(cookieName + AyahList[rowIndex].Id.ToString(),AyahList[rowIndex].Id.ToString()))"><i class="fa @bookmarks"></i></Button>
+                            <Button Color="ButtonColor.Light" TooltipTitle="Tandai Terakhir Dibaca" @onclick="(() => SetLastAyah(Id.Value, Surah.NameLatin, AyahList[rowIndex].AyahId, AyahList[rowIndex].Id, AyahList[rowIndex].JuzDetail.JuzId))"><Icon Name="IconNameLastAyahs[AyahList[rowIndex].Id]"/> </Button>
+                            <Button Color="ButtonColor.Light" TooltipTitle="Kembali Ke Atas" @onclick="(() => ScrollToAyah(1))"><Icon Name="IconName.ArrowUp" /></Button>
+                            <button @onclick="(() => ScrollToAyah(1))"><i class="fa fa-arrow-up"></i></button>
+                            <audio id="@playerID"> @* onpause="pauseAudio('@(i+1)') *@
+                                <source src="@($"{@AppSettingOption.Value.MP3UrlSetting}{@Id.Value:000}{AyahList[i].AyahId:000}.mp3")" type="audio/mp3" />
+                            </audio>
+                        </div>
+                    </div>
+                    <div class="col-12 text-end">
+                        @* <p class="@FontSizeSetting @fontArab">@(fontArab == "arab" ? @AyahList[i].ReadText : @AyahList[i].ReadTextUthmani)</p> *@
+                        <p class="@fontArab h2">@AyahList[i].ReadText</p>
+                    </div>
+                    <div class="col-12 text-start @hideTransliterasi">
+                        <p>@AyahList[i].ReadIndo</p>
+                    </div>
+                    <div class="col-12 text-start @hideTerjemahan">
+                        <p class="translate"><small>@AyahList[i].TranslateIndo</small></p>
+                    </div>
+                </div>
+            }            
+        </div>
+    </div>
+}

@@ -17,6 +17,7 @@ namespace MyQuranWebRepository.Interfaces
     public interface IAyahRepository : IGetRepository<Ayah, AyahFilter>
     {
         Task<IEnumerable<Ayah>> GetBySurahID(int surahID);
+        Task<IEnumerable<Ayah>> GetBySurahID(int surahID, int page, int take); // var model = query.Skip(0).Take(50).ToList();            
         Task<Ayah> GetBySurahAndAyahID(int surahID, int ayahID);
         Task<Ayah> GetByIDForPopUp(int id);
         Task<IEnumerable<AyahPage>> GetPageBySurahId(int surahID);

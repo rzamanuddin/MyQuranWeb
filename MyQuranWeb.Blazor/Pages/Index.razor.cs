@@ -16,8 +16,8 @@ namespace MyQuranWeb.Blazor.Pages
         [Inject]
         public ISurahRepository SurahRepository { get; init; }
 
-        [Inject]
-        public IJSRuntime JSRuntime { get; init; }
+        //[Inject]
+        //public IJSRuntime JSRuntime { get; init; }
 
         protected override async Task OnInitializedAsync()
         {
